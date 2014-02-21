@@ -3,12 +3,14 @@ import System.IO;
 
 var ArduinoValue : float = 0 ;
 var fileLocation;
-var fileName = "/ArmData.txt"; //Add date to filename in start?
+var fileName = "/ArmDatA.txt"; //Add date to filename in start?
 var StartedRecording : boolean = false;
 var RangeOfMovement : float = 120.0;
 var fullPath : String;
+var CreatedFile : boolean = false;
 
-function Start () {
+
+function CreateFile(){
 SetFileName ();
 fileLocation = Application.dataPath;
 //fileLocation = "C:/Data";
@@ -21,19 +23,45 @@ var ding = File.CreateText(fileLocation + "/"+fileName);
 ding.Close();
 //Write Date
 System.IO.File.WriteAllText(fileLocation + "/"+fileName,"HelloWurld");
+CreatedFile = true;
+WriteDate(); 
+}
 
+function CreateFile(name : String){
+fileName = System.DateTime.Now.ToString("MMddyyyy")+"_"+System.DateTime.Now.ToString("hhmm") + name;
+fileLocation = Application.dataPath;
+//fileLocation = "C:/Data";
+print(fileLocation);
+fullPath = fileLocation + "/"+fileName;
+
+var srs = File.CreateText(fileLocation + "/testfile.txt");
+srs.Close();
+var ding = File.CreateText(fileLocation + "/"+fileName);
+ding.Close();
+//Write Date
+System.IO.File.WriteAllText(fileLocation + "/"+fileName,"HelloWurld");
+CreatedFile = true;
 WriteDate(); 
 }
 
 function SetFileName (){
+
 fileName = System.DateTime.Now.ToString("MMddyyyy")+"_"+System.DateTime.Now.ToString("hhmm") +"ArmData.txt";
+}
+function SetFileName ( NameInput : String){
+
+fileName = System.DateTime.Now.ToString("MMddyyyy")+"_"+System.DateTime.Now.ToString("hhmm") +"NameInput";
 }
 
 function WriteDate(){
+if (!CreatedFile){
+print("file Not created!");
+return;}
 System.IO.File.AppendAllText(fileLocation + fileName, " " +  System.DateTime.Now.ToString("MM/dd/yyyy")); 
 }
 
 function GetString(stringText : String){
+if (!CreatedFile){return;}
 print("String received");
 System.IO.File.AppendAllText(fullPath, "\r\n" );
 System.IO.File.AppendAllText(fullPath, stringText);
@@ -55,16 +83,23 @@ function GetValue(pinValue : int){
 	}
 }
 
-//Switch this to a timed or invoke function.
+//Switch this to a timed or invoke function.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function Update () {
 //System.IO.File.AppendAllText(fileLocation + "/DINGBAT2.txt", ArduinoValue.ToString());
 //System.IO.File.AppendAllText(fileLocation + "/DINGBAT2.txt", " " + Time.time.ToString());
+if (!CreatedFile){
+//print("file Not created!");
+return;}
+else{
 WriteDatatoFile();
 //srs.Close();
 }
+}
 
 function WriteDatatoFile(){
-
+if (!CreatedFile){
+print("file Not created!");
+return;}
 System.IO.File.AppendAllText(fullPath, ArduinoValue.ToString());
 System.IO.File.AppendAllText(fullPath, " " + Time.time.ToString());
 System.IO.File.AppendAllText(fullPath, " " + System.DateTime.Now.ToString("hh:mm:ss"));

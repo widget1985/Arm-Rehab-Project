@@ -5,7 +5,8 @@ var FadeOutOption : boolean;
 
 
 */
-var stringToEdit : String = "Write Notes Here";
+
+private var Protocol;
 var repNumber : int = 0;
 var numberGui : GameObject;
 var RCurtain : GameObject;
@@ -30,7 +31,7 @@ var  targetValue : float;
 var RepAmount;
 var SessionTime;
 
-var DisplayGUI : boolean = true;
+//var DisplayGUI : boolean = true;
 var GameRunning : boolean = true;
 var Tada : AudioClip;
 
@@ -52,8 +53,9 @@ atEndGame = true;
 }
 
 function Start () {
+Protocol = GameObject.Find("Protocol");
 ImageNavigator = GameObject.Find("ImageNavigator");
-ImageNavigator.SendMessage("ShowChoices",true);
+//ImageNavigator.SendMessage("ShowChoices",true);
 //Depreciated, replace with something else
 	screen.renderer.material.mainTexture = slides[currentSlide];
 		//screen.pixelInset = new Rect(-slides[currentSlide].width/2, -slides[currentSlide].height/2, slides[currentSlide].width, slides[currentSlide].height);
@@ -108,12 +110,23 @@ atEndGame = true;
 		audio.PlayOneShot(Tada);
 	}
 //	print("mathsround  "+Mathf.RoundToInt(newPos.x));
-     if(Mathf.RoundToInt(targetValue) == 0.00 && !slideReady)
+     if(Mathf.RoundToInt(targetValue) == 0.000 && !slideReady)
      {
      //Change the slide
      ImageNavigator.SendMessage("ChangeImg");
-     if (numberGui){
+     
      repNumber++;
+     var LvlState;
+     if(repNumber <= 1){
+     var poop = Protocol.GetComponent(ProtocolTimer).state;
+ //Protocol.GetComponent(ProtocolTimer).state = LvlState.Wait;
+     }
+     else if (repNumber >= 1){
+   // Protocol.GetComponent(ProtocolTimer).state = LvlState.InProgress;
+
+     }
+     
+     if (numberGui){  
      numberGui.guiText.text = repNumber.ToString() + " reps";
      
      }
@@ -153,20 +166,15 @@ function OnGUI(){
 				print("load curtain Level");
 						Application.LoadLevel("Clapping");
 
-
 		}
 		
-		GUILayout.EndHorizontal();
-		
+		GUILayout.EndHorizontal();		
 		GUILayout.FlexibleSpace();
 		GUILayout.EndArea();
 	}
-
+/*
 	if(DisplayGUI){
-	
 	//GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);	
-	 stringToEdit = GUILayout.TextField (stringToEdit, 100);
-	
     if(GUILayout.Button("StartGame")){
     	BroadcastMessage("GetString",stringToEdit);
 		BroadcastMessage("StartRecord", 1);
@@ -176,4 +184,6 @@ function OnGUI(){
 		
 	}
   }
+  */
 }
+

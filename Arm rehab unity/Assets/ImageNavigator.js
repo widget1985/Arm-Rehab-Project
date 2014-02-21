@@ -20,7 +20,7 @@ function Awake () {
 	var oneLevelUp = Application.dataPath + "/../";
 	//var dirInfo = new System.IO.DirectoryInfo(oneLevelUp).GetFiles();
 	fileDirs = Directory.GetDirectories(Application.dataPath+"/Resources");
-    for (var i : int = 0; i < fileDirs.length; i++){
+    for (var i : int = 1; i < fileDirs.length; i++){
     
    		var filePaths : String[] = Directory.GetFiles(fileDirs[i],"*.jpg");
    		

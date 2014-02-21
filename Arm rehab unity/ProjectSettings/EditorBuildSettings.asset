@@ -7,3 +7,5 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Fruit Cut Ninja Starter Kit/game.unity
+  - enabled: 1
+    path: Assets/Scenes/Curtains.unity
