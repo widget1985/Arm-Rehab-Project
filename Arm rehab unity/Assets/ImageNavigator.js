@@ -35,7 +35,7 @@ function Awake () {
 	    }    
 	}
 	//Still nessesary
-	LoadThumbImages();
+	Invoke("LoadThumbImages", 2);
 }
 
 function Update(){
@@ -101,7 +101,9 @@ function LoadThumbImages(){
 		}
 	}
 
+/*
 function OnGUI(){
+
 GUILayout.Space(100);
 	GUILayout.Label("Press K for menu");
 	if(showChoices){
@@ -122,3 +124,4 @@ GUILayout.Space(100);
 	
 	}
 }
+*/

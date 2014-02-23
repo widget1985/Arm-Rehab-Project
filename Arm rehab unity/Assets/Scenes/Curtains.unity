@@ -501,7 +501,7 @@ GameObject:
   - 114: {fileID: 1159878571}
   - 114: {fileID: 1159878572}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -530,7 +530,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e861b31e123c4c98a76869fd82d7b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stringToEdit: Write Notes Here
   repNumber: 0
   numberGui: {fileID: 1840998671}
   RCurtain: {fileID: 974759786}
@@ -546,7 +545,6 @@ MonoBehaviour:
   ArduinoAdjustSub: .00999999978
   ArduinoValue: 0
   targetValue: 0
-  DisplayGUI: 1
   GameRunning: 1
   Tada: {fileID: 8300000, guid: ceb120b2064edc34cbd1ccae10bbbfad, type: 3}
   slides:
@@ -590,6 +588,7 @@ MonoBehaviour:
   StartedRecording: 0
   RangeOfMovement: 120
   fullPath: 
+  CreatedFile: 0
 --- !u!82 &1159878573
 AudioSource:
   m_ObjectHideFlags: 0

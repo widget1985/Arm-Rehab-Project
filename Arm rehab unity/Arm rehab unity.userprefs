@@ -1,11 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\CurtainOpener.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ImageNavigator.js">
     <Files>
       <File FileName="Assets\Scripts\AnalogReadGear.cs" Line="1" Column="1" />
-      <File FileName="Assets\CurtainOpener.js" Line="121" Column="60" />
+      <File FileName="Assets\CurtainOpener.js" Line="1" Column="1" />
       <File FileName="Assets\WriteValues.js" Line="1" Column="1" />
-      <File FileName="Assets\ProtocolTimer.js" Line="1" Column="1" />
+      <File FileName="Assets\ProtocolTimer.js" Line="108" Column="23" />
+      <File FileName="Assets\ImageNavigator.js" Line="105" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -9,7 +9,7 @@ var RangeOfMovement : float = 120.0;
 var fullPath : String;
 var CreatedFile : boolean = false;
 
-
+/*
 function CreateFile(){
 SetFileName ();
 fileLocation = Application.dataPath;
@@ -25,28 +25,33 @@ ding.Close();
 System.IO.File.WriteAllText(fileLocation + "/"+fileName,"HelloWurld");
 CreatedFile = true;
 WriteDate(); 
+print("FileCreated at" + fileLocation);
+
 }
+*/
 
 function CreateFile(name : String){
-fileName = System.DateTime.Now.ToString("MMddyyyy")+"_"+System.DateTime.Now.ToString("hhmm") + name;
+fileName = System.DateTime.Now.ToString("MM-dd-yyyy")+"_"+System.DateTime.Now.ToString("hh-mm") + name +".txt";
 fileLocation = Application.dataPath;
 //fileLocation = "C:/Data";
 print(fileLocation);
 fullPath = fileLocation + "/"+fileName;
 
-var srs = File.CreateText(fileLocation + "/testfile.txt");
-srs.Close();
+//var srs = File.CreateText(fileLocation + "/testfile.txt");
+//srs.Close();
 var ding = File.CreateText(fileLocation + "/"+fileName);
 ding.Close();
 //Write Date
-System.IO.File.WriteAllText(fileLocation + "/"+fileName,"HelloWurld");
+//System.IO.File.WriteAllText(fileLocation + "/"+fileName,"");
 CreatedFile = true;
 WriteDate(); 
+
+print("File Created at" + fileLocation + " and is called " +fileName );
 }
 
 function SetFileName (){
 
-fileName = System.DateTime.Now.ToString("MMddyyyy")+"_"+System.DateTime.Now.ToString("hhmm") +"ArmData.txt";
+fileName = System.DateTime.Now.ToString("MM-dd-yyyy")+"_"+System.DateTime.Now.ToString("hhmm") +"ArmData.txt";
 }
 function SetFileName ( NameInput : String){
 
