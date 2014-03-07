@@ -16,7 +16,7 @@ var timeValue : float = 0.0;
 var timeStrings : String[] = [" Five Minutes " , " Ten Mintues"];
 var handStrings : String[] = ["Left", "Right", "Both"];
 var DisplayGUI : boolean = true;
-
+var fontSize : int = 26;
 var GameManagerObject : GameObject;
 
 public var state : LvlState = LvlState.Setup;
@@ -28,8 +28,8 @@ function Update(){
   if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Q)){
   Application.Quit();  //CAPITAL Q FOR QUIT
   }
-  if(Input.GetKey(KeyCode.A)){
-  EndExercise ();
+  if(Input.GetKey(KeyCode.A)){//A is a dumb key to press
+  //EndExercise ();
   }
   
 }
@@ -151,7 +151,7 @@ function OnGUI(){
 
 		timeValue = timeCases*5 + 5; //Dumb
 		
-		 stringToEdit = GUILayout.TextField (stringToEdit, 500);
+		// stringToEdit = GUILayout.TextField (stringToEdit, 500);
 
 	if(GUILayout.Button("LoadLevel")){
 	previousChoices += "" + timeValue + " min-"+ handStrings[handValue] +"   \r\n";
@@ -162,6 +162,7 @@ function OnGUI(){
 	}//Setup
 	
 	if(state == LvlState.Wait){
+ GUI.skin.button.fontSize = fontSize;
 	if(GUILayout.Button("StartGame")){
 	startTime = Time.time;
 	BeginCountDown();	

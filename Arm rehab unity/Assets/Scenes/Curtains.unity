@@ -426,7 +426,7 @@ AudioSource:
   m_GameObject: {fileID: 1031008677}
   m_Enabled: 1
   serializedVersion: 3
-  m_audioClip: {fileID: 8300000, guid: 075f86405fb5b4b0f937ba396bed7b28, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4a3decec475eccf45ad207ccc396157f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -518,6 +518,7 @@ Transform:
   m_LocalScale: {x: 1.2400564, y: .834700882, z: 1}
   m_Children:
   - {fileID: 2021863465}
+  - {fileID: 1517433972}
   m_Father: {fileID: 0}
 --- !u!114 &1159878570
 MonoBehaviour:
@@ -545,8 +546,11 @@ MonoBehaviour:
   ArduinoAdjustSub: .00999999978
   ArduinoValue: 0
   targetValue: 0
+  FadeOutTimer: 5
+  FadeOutPlane: {fileID: 1517433971}
   GameRunning: 1
   Tada: {fileID: 8300000, guid: ceb120b2064edc34cbd1ccae10bbbfad, type: 3}
+  changeSlideValue: .100000001
   slides:
   - {fileID: 2800000, guid: 933e664a2f190407d9d585d8f30a5a72, type: 3}
   - {fileID: 2800000, guid: 8bd16eb0980ab4b6f93f2b15b86106ff, type: 3}
@@ -554,6 +558,9 @@ MonoBehaviour:
   - {fileID: 2800000, guid: bf18c68ca467a47b5adb7cb903770932, type: 3}
   screen: {fileID: 2021863464}
   slideReady: 0
+  fadeOutTexture: {fileID: 2800000, guid: 3ecc36ebe71807145a8a7ea646f8f4c4, type: 3}
+  fadeSpeed: .300000012
+  drawDepth: -1000
   atEndGame: 0
 --- !u!114 &1159878571
 MonoBehaviour:
@@ -780,6 +787,62 @@ InteractiveCloth:
   - m_Collider: {fileID: 1684126120}
     m_TwoWayInteraction: 0
     m_Tearable: 0
+--- !u!1 &1517433971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1517433972}
+  - 33: {fileID: 1517433974}
+  - 23: {fileID: 1517433973}
+  m_Layer: 0
+  m_Name: FadeoutPlane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1517433972
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1517433971}
+  m_LocalRotation: {x: -.0485440493, y: .705438554, z: -.706783295, w: -.0213863123}
+  m_LocalPosition: {x: -.0533912219, y: .485609949, z: -.48693037}
+  m_LocalScale: {x: 1.22706509, y: 1.22677672, z: 1.22706437}
+  m_Children: []
+  m_Father: {fileID: 1159878569}
+--- !u!23 &1517433973
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1517433971}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 04b154682cdfa2c4faea0aa3d9f2cc4e, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
+--- !u!33 &1517433974
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1517433971}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1549046281
 GameObject:
   m_ObjectHideFlags: 0

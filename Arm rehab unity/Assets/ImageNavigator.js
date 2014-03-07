@@ -34,8 +34,8 @@ function Awake () {
 			}
 	    }    
 	}
-	//Still nessesary
-	Invoke("LoadThumbImages", 2);
+	
+	//Invoke("LoadThumbImages", 2);
 }
 
 function Update(){
@@ -45,6 +45,7 @@ function Update(){
 	}
 	if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)){
 		 ReverseImg();
+		 print("Last Image");
 	}
 	
 }
@@ -58,15 +59,17 @@ function ChangeGallery( num : int){
 
 function ShowChoices(showem : boolean){
 
-showChoices = showem;
+//showChoices = showem;
 
 }
 
 function ReverseImg(){
 
-IncrementalNum--;
+IncrementalNum = IncrementalNum - 2  ;// DOES THIS WORK?????
 ChangeImg();
+print("Last Image");
 }
+
 
 
 function ChangeImg(){
@@ -89,39 +92,3 @@ function ChangeImg(){
 		MovieScreen.renderer.material.mainTexture = currentTexture;
 	}
 }
-
-function LoadThumbImages(){
-
-	for(var k = 0; k < 4; k++){
-	
-		var displayGallery : Object[] = Resources.LoadAll(k.ToString(), Texture2D);
-		var mytexture : Texture2D  = displayGallery[0] as Texture2D;
-		ButtonImages[k] =  mytexture ;
-		
-		}
-	}
-
-/*
-function OnGUI(){
-
-GUILayout.Space(100);
-	GUILayout.Label("Press K for menu");
-	if(showChoices){
-		if(GUILayout.Button("Return to Main Menu")){
-		Application.LoadLevel(0);
-		}
-		var offset = 50;
-		for(var i=0;i < ButtonImages.length; i++){
-			
-			var buttonImage = ButtonImages[i];
-			if(GUI.Button(new Rect(offset, Screen.height/2, 100, 80), buttonImage)){
-						Debug.Log("Clicked the image");
-						ChangeGallery(i);		
-			}
-			
-		offset = offset + 110;
-		}
-	
-	}
-}
-*/

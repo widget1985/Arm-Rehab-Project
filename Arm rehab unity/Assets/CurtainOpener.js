@@ -26,14 +26,16 @@ var ArduinoAdjustMult : float = 2.0;
 var ArduinoAdjustSub : float = 1.0;
 
 var ArduinoValue : float;
-var  targetValue : float;
+var targetValue : float;
 
 var RepAmount;
 var SessionTime;
-
+var FadeOutTimer : int = 5;
+var FadeOutPlane : GameObject;
 //var DisplayGUI : boolean = true;
 var GameRunning : boolean = true;
 var Tada : AudioClip;
+var changeSlideValue = 0.1;
 
 //Slide Stuff
 var slides : Texture2D[]  = new Texture2D[1];
@@ -45,39 +47,58 @@ var slides : Texture2D[]  = new Texture2D[1];
 
 
 function EndGame(){
-
-//Play Horray sound
-//ask to play again or play the curtain game
+//What is this for anymore?
+//Play Horray sound  
 atEndGame = true;
 
 }
 
 function Start () {
-Protocol = GameObject.Find("Protocol");
-ImageNavigator = GameObject.Find("ImageNavigator");
+  Protocol = GameObject.Find("Protocol");
+  ImageNavigator = GameObject.Find("ImageNavigator");
 //ImageNavigator.SendMessage("ShowChoices",true);
 //Depreciated, replace with something else
 	screen.renderer.material.mainTexture = slides[currentSlide];
-		//screen.pixelInset = new Rect(-slides[currentSlide].width/2, -slides[currentSlide].height/2, slides[currentSlide].width, slides[currentSlide].height);
-		currentSlide++;
-		numberGui.guiText.text = "Start!";
+//screen.pixelInset = new Rect(-slides[currentSlide].width/2, -slides[currentSlide].height/2, slides[currentSlide].width, slides[currentSlide].height);
+	currentSlide++;
+	numberGui.guiText.text = "Start!";
 }
 
 function GetValue(pinValue : int){
 //print(pinValue + "   " + (pinValue/1024));
-//Do some math?
-ArduinoValue =  (1.0*pinValue)/1024.00;
+  ArduinoValue =  (1.0*pinValue)/1024.00;  
 }
+
+// FadeInOut
+
+public var fadeOutTexture : Texture2D;
+public var fadeSpeed = 0.3;
+ 
+var drawDepth = -1000;
+ 
+private var alpha = 1.0; 
+ 
+private var fadeDir = -1;
+ 
+
+
+function fadeIn(){
+print("Fading_In");
+	fadeDir = -1;	
+}
+  
+function fadeOut(){
+print("Fading_Out");
+	fadeDir = 1;	
+}
+
 
 function Update ()
 {
 
-if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Q)){
-Application.Quit();
-}
-
-if(Input.GetKeyDown(KeyCode.P) || (Input.GetKeyDown(KeyCode.Escape))){
-atEndGame = true;
+if( (Input.GetKeyDown(KeyCode.Escape))){
+//  atEndGame = true;
+Protocol.SendMessage("EndExercise");
 
 }
 
@@ -96,28 +117,34 @@ atEndGame = true;
     //print(mousePos.x + " is the mouse pos " + newPos.x + " is the mouse to world point");  
     if(targetValue > 1.0){
     	targetValue = 1.0;
+    	   //  Invoke("fadeIn", FadeOutTimer);
+
     }    
-    //var step = speed * Time.deltaTime;		
-	// Move our position a step closer to the target.
+    //var step = speed * Time.deltaTime;			// Move our position a step closer to the target.
 	//transform.position = Vector3.MoveTowards(transform.position, target.position, step);
     RCurtain.transform.position.x = Mathf.MoveTowards(RCurtain.transform.position.x, Mathf.Exp(targetValue * moveMultiplyer) + curatinOffset, .4);
     LCurtain.transform.position.x = Mathf.MoveTowards(LCurtain.transform.position.x, -Mathf.Exp(targetValue * moveMultiplyer) - curatinOffset, 0.4);
 
 //Slides Stuff
-    if(currentSlide == slides.Length)
+    if(currentSlide == slides.Length)//Does this work or matter anymore?
 	{
 		currentSlide = 0;
 		audio.PlayOneShot(Tada);
 	}
 //	print("mathsround  "+Mathf.RoundToInt(newPos.x));
-     if(Mathf.RoundToInt(targetValue) == 0.000 && !slideReady)
+     if(targetValue <= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CUE
      {
      //Change the slide
-     ImageNavigator.SendMessage("ChangeImg");
+       ImageNavigator.SendMessage("ChangeImg");
+      print("Chnage the slide!");
+        
+        Invoke("fadeIn", 0);
      
-     repNumber++;
+       repNumber++;
      var LvlState;
-     if(repNumber <= 1){
+     if(repNumber <= 1 && Protocol.GetComponent(ProtocolTimer) != null){
+     //Have a null value cather here.
+    
      var poop = Protocol.GetComponent(ProtocolTimer).state;
  //Protocol.GetComponent(ProtocolTimer).state = LvlState.Wait;
      }
@@ -127,20 +154,28 @@ atEndGame = true;
      }
      
      if (numberGui){  
-     numberGui.guiText.text = repNumber.ToString() + " reps";
-     
+       numberGui.guiText.text = repNumber.ToString() + " reps";
      }
-
+		CancelInvoke("fadeOut");
+	//	CancelInvoke("fadeIn");
        slideReady = true;
-     }  
-     else if(Mathf.RoundToInt(targetValue) > .75){
+       
+       
+     }
+     else if(targetValue > .75){//this used to be rounded to int, why did i do tht?
      slideReady = false;
+     CancelInvoke("fadeIn");
+      if(!IsInvoking("fadeOut")){
+     Invoke("fadeOut", FadeOutTimer);
+     }
      }    
 }
 
 var atEndGame : boolean;
 
 function OnGUI(){
+
+
 
 	if(atEndGame){
 		GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
@@ -149,7 +184,7 @@ function OnGUI(){
 		GUILayout.BeginHorizontal();
 		GUILayout.FlexibleSpace();
 		 
-		GUILayout.Label("Again, or play a different game?");
+		//GUILayout.Label("Again, or play a different game?");
 		 
 		GUILayout.FlexibleSpace();
 		
@@ -157,20 +192,28 @@ function OnGUI(){
 		GUILayout.FlexibleSpace();
 		
 		GUILayout.BeginHorizontal();
-		if(GUILayout.Button("Start over")){
-		print("reload Level");
-		Application.LoadLevel(Application.loadedLevel);
 		
-		}
-		if(GUILayout.Button("Play Clapping Game")){
-				print("load curtain Level");
-						Application.LoadLevel("Clapping");
-
+		if(GUILayout.Button("Start over")){
+		  print("reload Level");
+		  Application.LoadLevel(Application.loadedLevel);
+		
 		}
 		
 		GUILayout.EndHorizontal();		
 		GUILayout.FlexibleSpace();
 		GUILayout.EndArea();
+	}
+	else{
+	alpha += fadeDir * fadeSpeed * Time.deltaTime;	
+	alpha = Mathf.Clamp01(alpha);	
+ 
+	GUI.color.a = alpha;
+ 
+	GUI.depth = drawDepth;
+	FadeOutPlane.renderer.material.mainTexture = fadeOutTexture;
+    FadeOutPlane.renderer.material.color.a = alpha;
+	//GUI.DrawTexture(Rect(0, 0, Screen.width, Screen.height), fadeOutTexture);
+	
 	}
 /*
 	if(DisplayGUI){
