@@ -4434,7 +4434,7 @@ GameObject:
   - 114: {fileID: 687591947}
   - 114: {fileID: 687591948}
   m_Layer: 0
-  m_Name: ClapperManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4606,6 +4606,7 @@ MonoBehaviour:
   StartedRecording: 0
   RangeOfMovement: 120
   fullPath: 
+  CreatedFile: 0
 --- !u!114 &687591948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7932,7 +7933,7 @@ Renderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1627504101}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255

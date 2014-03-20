@@ -1,4 +1,4 @@
-﻿#pragma strict
+﻿//#pragma strict  //LETS GET LOOSE
 /*
 //TODO
 //Written by Widget, 2013
@@ -8,17 +8,20 @@ var FadeOutOption : boolean;
 //
 */
 @script RequireComponent(AudioSource)
-
+private var Protocol;
 var BlackTexture : Texture2D;
 var ArduinoAdjustMult : float;
 var ArduinoAdjustSub : float;
 //user settings
 private var repeatSong : boolean;
-var songSelection : int;
-var songs : AudioClip[];
-var RepsBeforeReward : int = 2;
-var incrementalReward : boolean;
-var incrementValue : int = 2;
+var songSelection : int; // Handle with setup
+var songs : AudioClip[]; //Handle with setup
+//Put back in later?
+/*
+private var RepsBeforeReward : int = 2; 
+private var incrementalReward : boolean;
+private var incrementValue : int = 2;
+*/
 var GameRunning : boolean;
 //
 var Rhand : GameObject;
@@ -26,15 +29,12 @@ var Lhand : GameObject;
 
 var ArduinoCtrl : boolean;
 
-var  targetValue : float;
+var targetValue : float;
 
 var moveMultiplyer : float = 2;
 var curatinOffset = 0.5;
 var speed = 1;
 
-//No longer using tada for claps
-var Tada : AudioClip;
-//replace tada with clap sounds array
 var ClapSounds : AudioClip[];
 var clapSelection : int;
 
@@ -70,14 +70,14 @@ var stringToEdit : String = "Write notes here";
 
 
 function Start () {
-	
+	Protocol = GameObject.Find("Protocol");
 	GameRunning = false;
 	atEndGame = false;
 	TextTarget = GameObject.Find("GUI Text");
 }
 
 function SkyBoxTint(){
-	RenderSettings.skybox.SetColor("_Tint", Color( r/255, g/255, b/255, 0.5) );
+	RenderSettings.skybox.SetColor("_Tint", Color( r/255, g/255, b/255, 0.5) ); //this is not really used or cared about.
 }
 
 function GetValue(pinValue : int){
@@ -88,8 +88,13 @@ ArduinoValue =  (1.0*pinValue)/1024.00;//Normalize between 0 and 1;
 
 function Update ()
 {
+	
+if( (Input.GetKeyDown(KeyCode.Escape))){
+//  atEndGame = true;
+Protocol.SendMessage("EndExercise");
 
-	if (Input.GetKeyDown(KeyCode.R)){
+}
+	/*if (Input.GetKeyDown(KeyCode.R)){
 	Invoke("EndGame",0);
 	}
 	if(Input.GetKeyDown(KeyCode.K)){
@@ -97,9 +102,9 @@ function Update ()
 	}
 	
 	if(DisplayGUI){
-	SkyBoxTint(); 
+	SkyBoxTint(); //delete this later
 	}
-	
+	*/
 	if( ArduinoCtrl == true ){
 	targetValue = ArduinoValue - 1.0;
 	targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
@@ -174,41 +179,10 @@ atEndGame = true;
 var atEndGame : boolean;
 
 function OnGUI () {
-
-	if(atEndGame){
-		GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
-		GUILayout.FlexibleSpace();
-		
-		GUILayout.BeginHorizontal();
-		GUILayout.FlexibleSpace();
-		 
-		GUILayout.Label("Begin again, or play a different game?");
-		 
-		GUILayout.FlexibleSpace();
-		
-		GUILayout.EndHorizontal();
-		GUILayout.FlexibleSpace();
-		
-		GUILayout.BeginHorizontal();
-		if(GUILayout.Button("Start over")){
-		print("reload Level");
-				Application.LoadLevel(Application.loadedLevel);
-		}
-		if(GUILayout.Button("Play Curtain Game")){
-				print("load curtain Level");
-				Application.LoadLevel("Curtains");
-		}
-		
-		GUILayout.EndHorizontal();
-		
-		GUILayout.FlexibleSpace();
-		GUILayout.EndArea();
-	}
-
 	if(DisplayGUI){
 
 GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);	
- stringToEdit = GUILayout.TextField (stringToEdit, 100);
+// stringToEdit = GUILayout.TextField (stringToEdit, 100);
 
 		GUILayout.Label("Tracklist:");
 		for(var i : int; i < songs.length; i++){
@@ -224,7 +198,7 @@ GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);
 		 GUILayout.Label("Track to Play");
 		 Track = GUILayout.TextField (Track, GUILayout.Width(50));
 		 if (int.TryParse(Track, songSelection)){}
-		 repeatSong = GUILayout.Toggle(repeatSong, " Repeat ");
+		// repeatSong = GUILayout.Toggle(repeatSong, " Repeat ");
 		 GUILayout.EndHorizontal();	    
 	    //pick Instrument
 	     GUILayout.BeginHorizontal();
@@ -254,8 +228,8 @@ GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);
 	if(GUILayout.Button("StartGame")){
 		GameRunning = true;
 		DisplayGUI = false;
-		BroadcastMessage("GetString",stringToEdit);
-		BroadcastMessage("StartRecord", 1);
+		//BroadcastMessage("GetString",stringToEdit);
+		//BroadcastMessage("StartRecord", 1);
 	}
 	}//DisplayGui
 //	GUILayout.EndArea ();
@@ -341,54 +315,3 @@ function ChangeHandModel(model : int){
 //	print("Changeing Model to " + model);
 
 }
-
-
-
-function OldClap(){
-	 FXMuscialNotes.SetActive(false); //No music notes while clapping
-
-	if(RepsBeforeReward == ClapNumber){
-		//Invoke("StopSong",0);//Find another way to stop the songs
-		Invoke("PlaySong",1);
-		Invoke("StopSong", 15);//Find another way to stop the songs
-		if ( (RepsBeforeReward + incrementValue) <= 9){//maxincrementValue
-			RepsBeforeReward = RepsBeforeReward + incrementValue;//Stop this at some point
-		}
-		ClapNumber = 0;
-	}
-	else{		//Make some noize
-		audio.PlayOneShot(Tada);
-	}
-
-	//Make an effect happen.
-	if(FXPrefab){
-		var FX = Instantiate(FXPrefab);
-		FX.AddComponent ("TimedObjectDestructor");
-		FX.transform.position.z  -= 5;
-	}
-	if(TextTarget && (RepsBeforeReward != ClapNumber) ){
-	
-	TextTarget.guiText.text = "Clap "+ (RepsBeforeReward - ClapNumber) +" More Times!"; 
-	}
-	
-	if((ClapNumber < FXnumbers.length)){
-	
-		var numdisplay = Instantiate(FXnumbers[ClapNumber]);
-		var NumTarget = GameObject.Find("NumTarget");
-		// TODO  //Find all other numbers and destroy them
-		if (NumTarget){
-		numdisplay.transform.rotation = NumTarget.transform.rotation;
-		numdisplay.transform.position = NumTarget.transform.position;	
-		numdisplay.AddComponent ("TimedObjectDestructor");
-		//numdisplay.AddComponent(TBD) // make a script to scale and float up the number FX.
-		}
-	}
-	else{
-		//reset!
-		ClapNumber = 0;
-		TotalClaps++;
-	}
-	ClapNumber++;
-	TotalClaps++;
-	
-}//claps
