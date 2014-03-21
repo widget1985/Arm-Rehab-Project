@@ -11,3 +11,5 @@ EditorBuildSettings:
     path: Assets/Scenes/ProtocalMenuScene.unity
   - enabled: 1
     path: Assets/Scenes/Curtains.unity
+  - enabled: 1
+    path: Assets/Scenes/Clapping.unity

@@ -1,20 +1,117 @@
 ﻿#pragma strict
+/*******************
+Version 2.0!
+Rewritten a little 3/21/2014 to read images from the data folder.
+Needs some cleaning up.
+
+**************/
+
 
 import  System.IO;
 
-
 var fileDirs : String[];
 var MovieScreen : GameObject;
-var bunch : Texture2D[];
+//var bunch : Texture2D[];
 var ImageDir : String[,] = new String[20,200];
 
-var ButtonImages : Texture2D[] = new Texture2D[5];
 var currentTexture : Texture2D;
 var IncrementalNum : int = 0;
 
 var GalleryNum : int = 0;
 var showChoices : boolean;
 
+private var filesLocation : String = "C:/Data";
+var image : Texture2D[];
+
+public var images = new Array();
+public var galleryNumber : int;
+//SET I HERE
+
+function GetFilePaths(){
+
+var dInfo : DirectoryInfo = DirectoryInfo(filesLocation);
+var subdirs: DirectoryInfo[] = dInfo.GetDirectories();
+		for(var i = 0; i < dInfo.GetDirectories().Length; i++){
+		//LoadThumbs(Directory.GetFiles(subdirs[i].FullName, "*.jpg", SearchOption.AllDirectories),0);
+	}//LOADING TOOO MANY IMAGES CAN BE DANGEROUS
+				LoadAll(Directory.GetFiles(subdirs[galleryNumber].FullName, "*.jpg", SearchOption.AllDirectories));
+				print("images loading!");
+
+}
+var imagedex : int = 0;
+var builtinArray : Texture2D[] = images.ToBuiltin(Texture2D) as Texture2D[];//please change the name of this variable
+
+function LoadAll( filePaths : String[]) {
+		for(var filePath : String in filePaths) {
+			var load : WWW = new WWW("file:///"+filePath);
+			
+			 yield load;
+			if (!String.IsNullOrEmpty(load.error)) {
+				Debug.LogWarning(filePath + " error");
+			} else {
+//			print("GEttingImages?");
+				images.Push(load.texture);
+				//image[imagedex]= load.texture;
+				//imagedex++;
+				builtinArray = images.ToBuiltin(Texture2D) as Texture2D[];
+				
+			}
+		}
+		
+	}
+
+function Update(){
+	/*
+	if(Input.GetKeyDown(KeyCode.K)){
+		showChoices = ! showChoices;
+	}
+	*/
+	if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)){
+		 ReverseImg();
+		 print("Last Image");
+	}
+	
+}
+
+function SetGallery(dirNum : int){
+galleryNumber = dirNum;
+GetFilePaths();
+
+}
+
+function ChangeGallery( num : int){ //Depreciated
+	GalleryNum = num;
+}
+
+function ReverseImg(){
+if(IncrementalNum > 1){
+IncrementalNum = IncrementalNum - 2  ; //This works, but I have no idea why
+ChangeImg();
+print("Last Image");
+}
+}
+
+
+function ChangeImg(){
+//print("time to change the image");
+if(IncrementalNum < builtinArray.length){
+	
+		var texture : Texture2D  = builtinArray[IncrementalNum] as Texture2D;
+		currentTexture = texture;
+		IncrementalNum++;
+		
+	}
+	else{
+		IncrementalNum = 0;
+		ChangeImg();
+	}	
+		
+	if(currentTexture != null){
+		MovieScreen.renderer.material.mainTexture = currentTexture;
+	}
+}
+//JUNK Sunk Below Here:
+/*
 function Awake () {
    //THIS MAY ALL NOT BE NESSESARY
 	var oneLevelUp = Application.dataPath + "/../";
@@ -37,41 +134,8 @@ function Awake () {
 	
 	//Invoke("LoadThumbImages", 2);
 }
-
-function Update(){
-	
-	if(Input.GetKeyDown(KeyCode.K)){
-		showChoices = ! showChoices;
-	}
-	if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)){
-		 ReverseImg();
-		 print("Last Image");
-	}
-	
-}
-
-function ChangeGallery( num : int){
-
-	GalleryNum = num;
-
-}
-
-
-function ShowChoices(showem : boolean){
-
-//showChoices = showem;
-
-}
-
-function ReverseImg(){
-
-IncrementalNum = IncrementalNum - 2  ;// DOES THIS WORK?????
-ChangeImg();
-print("Last Image");
-}
-
-
-
+*/
+/*
 function ChangeImg(){
 	
 	var Gallery: String = GalleryNum.ToString();
@@ -92,3 +156,4 @@ function ChangeImg(){
 		MovieScreen.renderer.material.mainTexture = currentTexture;
 	}
 }
+*/

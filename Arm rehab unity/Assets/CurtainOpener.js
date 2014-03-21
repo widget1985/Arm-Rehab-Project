@@ -136,7 +136,7 @@ Protocol.SendMessage("EndExercise");
      {
      //Change the slide
        ImageNavigator.SendMessage("ChangeImg");
-      print("Chnage the slide!");
+      print("Change the slide!");
         
         Invoke("fadeIn", 0);
      
@@ -174,21 +174,8 @@ Protocol.SendMessage("EndExercise");
 var atEndGame : boolean;
 
 function OnGUI(){
-
-
-
 	if(atEndGame){
 		GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
-		GUILayout.FlexibleSpace();
-		
-		GUILayout.BeginHorizontal();
-		GUILayout.FlexibleSpace();
-		 
-		//GUILayout.Label("Again, or play a different game?");
-		 
-		GUILayout.FlexibleSpace();
-		
-		GUILayout.EndHorizontal();
 		GUILayout.FlexibleSpace();
 		
 		GUILayout.BeginHorizontal();
@@ -196,14 +183,12 @@ function OnGUI(){
 		if(GUILayout.Button("Start over")){
 		  print("reload Level");
 		  Application.LoadLevel(Application.loadedLevel);
-		
 		}
-		
 		GUILayout.EndHorizontal();		
 		GUILayout.FlexibleSpace();
 		GUILayout.EndArea();
 	}
-	else{
+	else{ //WHY IS THIS IN AN ELSE?
 	alpha += fadeDir * fadeSpeed * Time.deltaTime;	
 	alpha = Mathf.Clamp01(alpha);	
  
@@ -215,18 +200,5 @@ function OnGUI(){
 	//GUI.DrawTexture(Rect(0, 0, Screen.width, Screen.height), fadeOutTexture);
 	
 	}
-/*
-	if(DisplayGUI){
-	//GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);	
-    if(GUILayout.Button("StartGame")){
-    	BroadcastMessage("GetString",stringToEdit);
-		BroadcastMessage("StartRecord", 1);
-		GameRunning = true;
-		ImageNavigator.SendMessage("ShowChoices",false);
-		DisplayGUI = false;
-		
-	}
-  }
-  */
 }
 

@@ -5,10 +5,14 @@
 
 var FadeOutOption : boolean;
 
+Version 2.0 For protocol.  Eliminated GUI, Will add in hooks for protocol script
+
 //
 */
 @script RequireComponent(AudioSource)
 private var Protocol;
+var atEndGame : boolean;
+
 var BlackTexture : Texture2D;
 var ArduinoAdjustMult : float;
 var ArduinoAdjustSub : float;
@@ -22,7 +26,7 @@ private var RepsBeforeReward : int = 2;
 private var incrementalReward : boolean;
 private var incrementValue : int = 2;
 */
-var GameRunning : boolean;
+private var GameRunning : boolean = true;
 //
 var Rhand : GameObject;
 var Lhand : GameObject;
@@ -59,9 +63,9 @@ var hands : GameObject[]; var maracas : GameObject[];var cymbals : GameObject[];
 
 private var integerText = "";
 private var  Track = "";
-var DisplayGUI : boolean = true;
+private var DisplayGUI : boolean = false;
 
-var stringToEdit : String = "Write notes here";
+private var stringToEdit : String = "Write notes here";
 
 @System.NonSerialized
     var currentSlide : int = 0;
@@ -71,9 +75,10 @@ var stringToEdit : String = "Write notes here";
 
 function Start () {
 	Protocol = GameObject.Find("Protocol");
-	GameRunning = false;
+	//GameRunning = false;
 	atEndGame = false;
 	TextTarget = GameObject.Find("GUI Text");
+	ChangeHandModel(0);
 }
 
 function SkyBoxTint(){
@@ -81,56 +86,40 @@ function SkyBoxTint(){
 }
 
 function GetValue(pinValue : int){
-//print(pinValue + "   " + (pinValue/1024));
-//Do some math?
+//print(pinValue + "   " + (pinValue/1024));//Do some math?
 ArduinoValue =  (1.0*pinValue)/1024.00;//Normalize between 0 and 1;
 }
 
 function Update ()
 {
 	
-if( (Input.GetKeyDown(KeyCode.Escape))){
-//  atEndGame = true;
-Protocol.SendMessage("EndExercise");
-
-}
-	/*if (Input.GetKeyDown(KeyCode.R)){
-	Invoke("EndGame",0);
-	}
-	if(Input.GetKeyDown(KeyCode.K)){
-	DisplayGUI = !DisplayGUI;
+	if( (Input.GetKeyDown(KeyCode.Escape))){
+	//Protocol.SendMessage("EndExercise");
 	}
 	
-	if(DisplayGUI){
-	SkyBoxTint(); //delete this later
-	}
-	*/
 	if( ArduinoCtrl == true ){
-	targetValue = ArduinoValue - 1.0;
-	targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
-	//reversi
-	//targetValue = ( )
-	
-//	print(targetValue);
+		targetValue = ArduinoValue - 1.0;
+		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
+		//print(targetValue);
 	}
 	
 	else{
-	var mousePos = Input.mousePosition ;
-	mousePos.z = 1; // select distance = 10 units from the camera
-	var newPos  = (Camera.main.ScreenToWorldPoint(mousePos));
-	targetValue	= newPos.x;
-	print(targetValue);
+		var mousePos = Input.mousePosition ;
+		mousePos.z = 1; // select distance = 10 units from the camera
+		var newPos  = (Camera.main.ScreenToWorldPoint(mousePos));
+		targetValue	= newPos.x;
+	//	print(targetValue);  //Might need investigation
 	}
 	
 	if(GameRunning){
 	
 	    if(targetValue > 1){				
     
-   		targetValue = 1;
+   			targetValue = 1;
 	    }
 	    if (targetValue > innerLimit){
-    
-	    targetValue = innerLimit;
+   
+	   	 targetValue = innerLimit;
     
 	    if(!hasClapped){
 		    Clap();
@@ -142,7 +131,7 @@ Protocol.SendMessage("EndExercise");
 	    hasClapped = false;
     }
     //print(newPos.x);
-	Rhand.transform.rotation = Quaternion.Euler(0,-targetValue * 35,0);
+	Rhand.transform.rotation = Quaternion.Euler(0,-targetValue * 35,0);  //MAGIC NUMBERS!!!!! FIX 
 	Lhand.transform.rotation = Quaternion.Euler(0,targetValue * 35,0);
   }
 }
@@ -152,9 +141,11 @@ function Clap(){
 	TotalClaps++;
 	//Make some noize
 	audio.PlayOneShot(ClapSounds[clapSelection]);
-	if(TotalClaps == 1 && !audio.isPlaying){ //Clap once to begin
-	Invoke("PlaySong", 0);
-	Invoke("EndGame", songs[songSelection].length + 1);
+	if(TotalClaps == 2 ){ //Clap once to begin
+	Protocol.SendMessage("BeginCountDown");
+	print("CountdownCall Sent To Protocol");
+	//Invoke("PlaySong", 0); //Send to protocol
+	//Invoke("EndGame", songs[songSelection].length + 1);
 	}
 	if(FXPrefab){
 		var FX = Instantiate(FXPrefab);
@@ -163,20 +154,11 @@ function Clap(){
 	}
 	
 	if(TextTarget){	
-	TextTarget.guiText.text = "" + (TotalClaps) +" Claps!"; 
+		TextTarget.guiText.text = "" + (TotalClaps) +" Claps!"; 
 	}
 
 }
 
-function EndGame(){
-//Play Horray sound
-//ask to play again or play the curtain game
-atEndGame = true;
-
-}
-
-
-var atEndGame : boolean;
 
 function OnGUI () {
 	if(DisplayGUI){
@@ -227,7 +209,7 @@ GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);
 		//Start Game:
 	if(GUILayout.Button("StartGame")){
 		GameRunning = true;
-		DisplayGUI = false;
+		//DisplayGUI = false;
 		//BroadcastMessage("GetString",stringToEdit);
 		//BroadcastMessage("StartRecord", 1);
 	}
@@ -242,6 +224,7 @@ function StopSong(){
 }
 
 function PlaySong(){
+/*
 if(!audio.isPlaying){
 	//FXMuscialNotes.SetActive(true);
 	if(repeatSong){
@@ -256,6 +239,7 @@ if(!audio.isPlaying){
 		}
 	}
 	//Display song name somehow
+	*/
 }
 
 function ChangeHandModel(model : int){

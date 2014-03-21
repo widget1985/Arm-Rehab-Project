@@ -34,7 +34,7 @@ function CreateFile(name : String){
 fileName = System.DateTime.Now.ToString("MM-dd-yyyy")+"_"+System.DateTime.Now.ToString("hh-mm") + name +".txt";
 fileLocation = Application.dataPath;
 //fileLocation = "C:/Data";
-print(fileLocation);
+//print(fileLocation);
 fullPath = fileLocation + "/"+fileName;
 
 //var srs = File.CreateText(fileLocation + "/testfile.txt");
