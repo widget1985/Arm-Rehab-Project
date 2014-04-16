@@ -39,12 +39,11 @@ var changeSlideValue = 0.1;
 
 //Slide Stuff
 var slides : Texture2D[]  = new Texture2D[1];
-   var screen : GameObject;
+var screen : GameObject;
 
  @System.NonSerialized
     var currentSlide : int = 0;
     var slideReady : boolean;
-
 
 function EndGame(){
 //What is this for anymore?
@@ -80,8 +79,6 @@ private var alpha = 1.0;
  
 private var fadeDir = -1;
  
-
-
 function fadeIn(){
 print("Fading_In");
 	fadeDir = -1;	
@@ -92,20 +89,12 @@ print("Fading_Out");
 	fadeDir = 1;	
 }
 
-
 function Update ()
 {
-
-if( (Input.GetKeyDown(KeyCode.Escape))){
-//  atEndGame = true;
-Protocol.SendMessage("EndExercise");
-
-}
-
 	if( ArduinoCtrl == true ){
 		targetValue = ArduinoValue - 1.0;
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
-//		print(targetValue);
+		//print(targetValue);
 	}
 	else{
 	  var mousePos = Input.mousePosition ;
@@ -117,8 +106,7 @@ Protocol.SendMessage("EndExercise");
     //print(mousePos.x + " is the mouse pos " + newPos.x + " is the mouse to world point");  
     if(targetValue > 1.0){
     	targetValue = 1.0;
-    	   //  Invoke("fadeIn", FadeOutTimer);
-
+    	//Invoke("fadeIn", FadeOutTimer);
     }    
     //var step = speed * Time.deltaTime;			// Move our position a step closer to the target.
 	//transform.position = Vector3.MoveTowards(transform.position, target.position, step);
@@ -143,7 +131,7 @@ Protocol.SendMessage("EndExercise");
        repNumber++;
      var LvlState;
      if(repNumber <= 1 && Protocol.GetComponent(ProtocolTimer) != null){
-     //Have a null value cather here.
+     //Have a null value catcher here.
     
      var poop = Protocol.GetComponent(ProtocolTimer).state;
  //Protocol.GetComponent(ProtocolTimer).state = LvlState.Wait;
@@ -175,20 +163,9 @@ var atEndGame : boolean;
 
 function OnGUI(){
 	if(atEndGame){
-		GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
-		GUILayout.FlexibleSpace();
-		
-		GUILayout.BeginHorizontal();
-		
-		if(GUILayout.Button("Start over")){
-		  print("reload Level");
-		  Application.LoadLevel(Application.loadedLevel);
-		}
-		GUILayout.EndHorizontal();		
-		GUILayout.FlexibleSpace();
-		GUILayout.EndArea();
+	//preprotocol old stuff was here
 	}
-	else{ //WHY IS THIS IN AN ELSE?
+	else{ 
 	alpha += fadeDir * fadeSpeed * Time.deltaTime;	
 	alpha = Mathf.Clamp01(alpha);	
  
@@ -198,7 +175,6 @@ function OnGUI(){
 	FadeOutPlane.renderer.material.mainTexture = fadeOutTexture;
     FadeOutPlane.renderer.material.color.a = alpha;
 	//GUI.DrawTexture(Rect(0, 0, Screen.width, Screen.height), fadeOutTexture);
-	
 	}
 }
 

@@ -44,6 +44,16 @@ public var state : LvlState = LvlState.Setup;
 
 var previousChoices : String;
 
+
+private var startTime : float;
+var textTime : String;
+
+
+function Start() {
+	startTime = Time.time;
+	Invoke("GetFilePaths", 1);
+}
+
 function Update(){
 
  if (Input.GetKeyDown(KeyCode.P)){ //P for PLAY!
@@ -68,10 +78,9 @@ if (Input.GetKeyDown(KeyCode.Escape)){ //esc goes back to start
 var currentLevel : int;
 
 function Awake () {
-		DontDestroyOnLoad (transform.gameObject);
-		
+		DontDestroyOnLoad (transform.gameObject);		
 		//SUPER UGLY EDITOR LEVELISLOADED WORKAROUND
-		InvokeRepeating("CheckLevel", 1 , 1);
+		//InvokeRepeating("CheckLevel", 1 , 1);
 	}
 	
 function CheckLevel(){
@@ -114,25 +123,31 @@ function StateChange( ){
 public function BeginCountDown(){
  //Display timer?
  print("Messagee Received!");
+ 
  if(Application.loadedLevelName == LevelOneName){
  	//start writevalue, and write some strings to start it.
  	Invoke("EndExercise",timeValue*60);//Come up with a better TimeValue variable name
- }
+ }//lvl 1
+ 
  else if(Application.loadedLevelName == LevelTwoName){
  	
  	audio.Stop();
  	audio.clip = songs[songSelection];
- 	timeValue = ((audio.clip.length + 0.000) / 60.000);
+ 	audio.loop = true;
+ 	//Limit to 5 or ten minutes instead  //timeValue = ((audio.clip.length + 0.000) / 60.000);
  	
- 	print(audio.clip.length/60 + "setting time value to "+timeValue);
- 	startTime = Time.time;
- 	Invoke("EndExercise",timeValue * 60);// audioclips are in seconds
+ 	//print(audio.clip.length/60 + "setting time value to "+timeValue);
+ 	//startTime = Time.time;
+ 	
+ 	Invoke("EndExercise",timeValue * 60);// audioclips are in seconds	
+ 	
  	PlaySong();
  	print("CountDownBegun");
  
- }
+ }//else if lvl 2
  state = LvlState.InProgress; //doesn't do nuttin yet
 }
+
 
 function EndExercise (){
  //Make sure we close the txt file?  Write an end?
@@ -224,11 +239,13 @@ function OnGUI(){
 	//GUILayout.EndArea ();
 	//GUILayout.BeginArea (Rect (10,85,800,800));
 		
-	if(levelValue == 0){
+	
 		timeCases = GUILayout.SelectionGrid (timeCases, timeStrings, 3);
 		timeValue = timeCases*5 + 5; //Dumb
 		//SHoW SOME PICTURES.
+		if(levelValue == 0){
 		 GUILayout.BeginHorizontal();
+		 
 		for(var thumbImage : Texture2D in thumbImagesBuiltinArray){
 		//if(GUILayout.Button(thumbImage, GUILayout.Width(100), GUILayout.Height(100))){}
 		
@@ -240,7 +257,7 @@ function OnGUI(){
 }
 	
 	
-	else if(levelValue == 1){
+	//else if(levelValue == 1){
 	GUILayout.Label("Tracklist:");
 	scrollPosition = GUILayout.BeginScrollView ( scrollPosition, GUILayout.Width (800), GUILayout.Height (200));
 		for(var i : int; i < songs.length; i++){
@@ -262,9 +279,9 @@ function OnGUI(){
 		 
 		// repeatSong = GUILayout.Toggle(repeatSong, " Repeat ");
 		 GUILayout.EndHorizontal();	
-		 timeValue = songs[songSelection].length / 60;
+		//Now just 5 or ten minutes    // timeValue = songs[songSelection].length / 60;
 		// print("       "+songs[songSelection].length+"");
-		 }//levlvalue==2    
+		 //}//levlvalue==2    
 		 
 		 
 		 if(GUILayout.Button("Load Level")){
@@ -309,15 +326,6 @@ function OnGUI(){
 	
 }//onGUi
   
-  
-private var startTime : float;
-var textTime : String;
-//First define two variables. One private and one public variable. Set the first variable to be a float.
-//Use for textTime a string.
-function Start() {
-	startTime = Time.time;
-	Invoke("GetFilePaths", 1);
-}
 
 
 private var filesLocation : String = "C:/Data";
@@ -329,13 +337,12 @@ function GetFilePaths(){
 
 var dInfo : DirectoryInfo = DirectoryInfo(filesLocation);
 var subdirs: DirectoryInfo[] = dInfo.GetDirectories();
-		//string subdir;
 		for(var i = 0; i < dInfo.GetDirectories().Length; i++){
 		//print (dInfo.GetDirectories().Length);
-//		print (subdirs[i].FullName);
+		//print (subdirs[i].FullName);
 		LoadThumbs(Directory.GetFiles(subdirs[i].FullName, "*.jpg", SearchOption.AllDirectories),0);
 	}//LOADING TOOO MANY IMAGES CAN BE DANGEROUS
-				//LoadAll(Directory.GetFiles(subdirs[2].FullName, "*.jpg", SearchOption.AllDirectories));
+	//LoadAll(Directory.GetFiles(subdirs[2].FullName, "*.jpg", SearchOption.AllDirectories));
 				
 
 
@@ -378,16 +385,5 @@ function LoadAll( filePaths : String[]) {
 		}
 		
 	}
-
-*/
-  
-  //Don't destroy on Load
-  
-  /*
-  5 min-Left Hand 1 
-10 min-Both Hands 1 
-5 min-Left Hand 2 
-10 min-Both Hands 2 
-5 min-Left Hand 3 
 
 */
