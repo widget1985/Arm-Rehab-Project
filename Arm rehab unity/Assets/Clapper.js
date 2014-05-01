@@ -93,9 +93,10 @@ ArduinoValue =  (1.0*pinValue)/1024.00;//Normalize between 0 and 1;
 function Update ()
 {
 	
-	if( (Input.GetKeyDown(KeyCode.Escape))){
-	//Protocol.SendMessage("EndExercise");
-	}
+if(Input.GetKeyUp(KeyCode.A)){
+ArduinoCtrl = ! ArduinoCtrl;
+}
+
 	
 	if( ArduinoCtrl == true ){
 		targetValue = ArduinoValue - 1.0;

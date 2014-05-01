@@ -126,7 +126,20 @@ public function BeginCountDown(){
  
  if(Application.loadedLevelName == LevelOneName){
  	//start writevalue, and write some strings to start it.
- 	Invoke("EndExercise",timeValue*60);//Come up with a better TimeValue variable name
+ 	//Invoke("EndExercise",timeValue*60);//Come up with a better TimeValue variable name
+ 	
+ 	audio.Stop();
+ 	audio.clip = songs[songSelection];
+ 	audio.loop = true;
+ 	//Limit to 5 or ten minutes instead  //timeValue = ((audio.clip.length + 0.000) / 60.000);
+ 	
+ 	//print(audio.clip.length/60 + "setting time value to "+timeValue);
+ 	//startTime = Time.time;
+ 		PlaySong();
+ 	Invoke("EndExercise",timeValue * 60);// audioclips are in seconds	
+ 	
+ 
+ 	print("CountDownBegun");
  }//lvl 1
  
  else if(Application.loadedLevelName == LevelTwoName){
@@ -182,7 +195,7 @@ imageNavigatorObject.SendMessage("SetGallery",galleryValue);
 else{print("WTF?  no imageNavigator?");}
 }
 else{print("WTF?  no gamemanager?");}
-
+print("CaseOne");
 break;
 
 case 2:
@@ -210,7 +223,6 @@ break;
  }
 
 }
-
 
 
 function PlaySong(){

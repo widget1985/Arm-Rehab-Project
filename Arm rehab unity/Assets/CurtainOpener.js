@@ -61,6 +61,9 @@ function Start () {
 //screen.pixelInset = new Rect(-slides[currentSlide].width/2, -slides[currentSlide].height/2, slides[currentSlide].width, slides[currentSlide].height);
 	currentSlide++;
 	numberGui.guiText.text = "Start!";
+	Protocol.SendMessage("BeginCountDown");
+	print("CountdownCall Sent To Protocol");
+	
 }
 
 function GetValue(pinValue : int){
@@ -80,17 +83,21 @@ private var alpha = 1.0;
 private var fadeDir = -1;
  
 function fadeIn(){
-print("Fading_In");
+//print("Fading_In");
 	fadeDir = -1;	
 }
   
 function fadeOut(){
-print("Fading_Out");
+//print("Fading_Out");
 	fadeDir = 1;	
 }
 
 function Update ()
 {
+
+if(Input.GetKeyUp(KeyCode.A)){
+ArduinoCtrl = ! ArduinoCtrl;
+}
 	if( ArduinoCtrl == true ){
 		targetValue = ArduinoValue - 1.0;
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;

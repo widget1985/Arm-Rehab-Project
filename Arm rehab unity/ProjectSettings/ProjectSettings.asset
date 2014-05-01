@@ -35,15 +35,15 @@ PlayerSettings:
   use32BitDisplayBuffer: 0
   use24BitDepthBuffer: 0
   defaultIsFullScreen: 0
-  defaultIsNativeResolution: 1
-  runInBackground: 0
+  defaultIsNativeResolution: 0
+  runInBackground: 1
   captureSingleScreen: 0
   Override IPod Music: 0
   Prepare IOS For Recording: 0
   enableHWStatistics: 1
   usePlayerLog: 1
   stripPhysics: 0
-  forceSingleInstance: 0
+  forceSingleInstance: 1
   resizableWindow: 0
   useMacAppStoreValidation: 0
   gpuSkinning: 0
@@ -68,8 +68,8 @@ PlayerSettings:
     width: 0
     height: 0
   m_SupportedAspectRatios:
-    4:3: 1
-    5:4: 1
+    4:3: 0
+    5:4: 0
     16:10: 1
     16:9: 1
     Others: 1
@@ -108,7 +108,8 @@ PlayerSettings:
   AndroidSplashScreenScale: 0
   AndroidKeystoreName: 
   AndroidKeyaliasName: 
-  resolutionDialogBanner: {fileID: 0}
+  resolutionDialogBanner: {fileID: 2800000, guid: a85ffb79fc7537b43976485deb84173a,
+    type: 3}
   m_BuildTargetIcons:
   - m_BuildTarget: 
     m_Icons:

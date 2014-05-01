@@ -1,9 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ProtocolTimer.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Clapper.js">
     <Files>
-      <File FileName="Assets\ProtocolTimer.js" Line="144" Column="14" />
-      <File FileName="Assets\CurtainOpener.js" Line="42" Column="1" />
+      <File FileName="Assets\CurtainOpener.js" Line="100" Column="2" />
+      <File FileName="Assets\ProtocolTimer.js" Line="1" Column="1" />
+      <File FileName="Assets\Clapper.js" Line="99" Column="1" />
+      <File FileName="Assets\ImageNavigator.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
