@@ -1,10 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Clapper.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\WriteValues.js">
     <Files>
+      <File FileName="Assets\WriteValues.js" Line="21" Column="13" />
       <File FileName="Assets\CurtainOpener.js" Line="100" Column="2" />
       <File FileName="Assets\ProtocolTimer.js" Line="1" Column="1" />
-      <File FileName="Assets\Clapper.js" Line="99" Column="1" />
+      <File FileName="Assets\Clapper.js" Line="1" Column="1" />
       <File FileName="Assets\ImageNavigator.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

@@ -883,17 +883,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileDirs: []
   MovieScreen: {fileID: 2021863464}
-  bunch: []
-  ButtonImages:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   currentTexture: {fileID: 2800000, guid: bc9ffda6032fd4df3a1c724baf613010, type: 3}
   IncrementalNum: 0
   GalleryNum: 0
   showChoices: 0
+  image: []
+  galleryNumber: 0
+  imagedex: 0
+  builtinArray: []
 --- !u!1 &1684126117
 GameObject:
   m_ObjectHideFlags: 0

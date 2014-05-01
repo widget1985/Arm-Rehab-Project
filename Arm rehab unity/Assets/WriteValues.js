@@ -3,7 +3,7 @@ import System.IO;
 
 var ArduinoValue : float = 0 ;
 var fileLocation;
-var fileName = "/ArmDatA.txt"; //Add date to filename in start?
+var fileName = "/ArmData.txt"; //Add date to filename in start?
 var StartedRecording : boolean = false;
 var RangeOfMovement : float = 120.0;
 var fullPath : String;
@@ -39,8 +39,8 @@ fullPath = fileLocation + "/"+fileName;
 
 //var srs = File.CreateText(fileLocation + "/testfile.txt");
 //srs.Close();
-var ding = File.CreateText(fileLocation + "/"+fileName);
-ding.Close();
+//var ding = File.CreateText(fileLocation + "/"+fileName);
+//ding.Close();
 //Write Date
 //System.IO.File.WriteAllText(fileLocation + "/"+fileName,"");
 CreatedFile = true;
@@ -59,6 +59,7 @@ fileName = System.DateTime.Now.ToString("MMddyyyy")+"_"+System.DateTime.Now.ToSt
 }
 
 function WriteDate(){
+/*
 if (!CreatedFile){
 print("file Not created!");
 return;}
@@ -71,6 +72,7 @@ print("String received");
 System.IO.File.AppendAllText(fullPath, "\r\n" );
 System.IO.File.AppendAllText(fullPath, stringText);
 System.IO.File.AppendAllText(fullPath, "\r\n" );
+*/
 }
 
 public function StartRecord(signal : int){
