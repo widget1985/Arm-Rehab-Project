@@ -550,7 +550,7 @@ MonoBehaviour:
   FadeOutPlane: {fileID: 1517433971}
   GameRunning: 1
   Tada: {fileID: 8300000, guid: ceb120b2064edc34cbd1ccae10bbbfad, type: 3}
-  changeSlideValue: .100000001
+  changeSlideValue: .349999994
   slides:
   - {fileID: 2800000, guid: 933e664a2f190407d9d585d8f30a5a72, type: 3}
   - {fileID: 2800000, guid: 8bd16eb0980ab4b6f93f2b15b86106ff, type: 3}

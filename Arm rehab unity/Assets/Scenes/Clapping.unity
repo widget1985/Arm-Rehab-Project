@@ -4462,9 +4462,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c67d637be2de4aaf82f2456dcf0e00f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atEndGame: 0
   BlackTexture: {fileID: 2800000, guid: 3ecc36ebe71807145a8a7ea646f8f4c4, type: 3}
   ArduinoAdjustMult: 2
-  ArduinoAdjustSub: -.800000012
+  ArduinoAdjustSub: -2
   songSelection: 1
   songs:
   - {fileID: 8300000, guid: 4a3decec475eccf45ad207ccc396157f, type: 3}
@@ -4482,10 +4483,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 219af42692e7f5d46939d1f801355333, type: 3}
   - {fileID: 8300000, guid: b8102cbec3c64d1438eb44d25fc90613, type: 3}
   - {fileID: 8300000, guid: 6ed8d4e9c1e0f11468d5a3bdc708f243, type: 3}
-  RepsBeforeReward: 2
-  incrementalReward: 0
-  incrementValue: 2
-  GameRunning: 0
   Rhand: {fileID: 1254693712}
   Lhand: {fileID: 1843707193}
   ArduinoCtrl: 1
@@ -4493,7 +4490,6 @@ MonoBehaviour:
   moveMultiplyer: 2
   curatinOffset: .5
   speed: 1
-  Tada: {fileID: 8300000, guid: 05a69cb92e30f415199bde0dd45a9076, type: 3}
   ClapSounds:
   - {fileID: 8300000, guid: f6d8bddad9e344ea7a7ad2e45728583d, type: 3}
   - {fileID: 8300000, guid: f70f3fe354c5c4fb3805a30901152cca, type: 3}
@@ -4528,10 +4524,7 @@ MonoBehaviour:
   cymbals:
   - {fileID: 420184697}
   - {fileID: 897950285}
-  DisplayGUI: 1
-  stringToEdit: Hello World
   slideReady: 0
-  atEndGame: 0
 --- !u!82 &687591946
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4620,17 +4613,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileDirs: []
   MovieScreen: {fileID: 1627504101}
-  bunch: []
-  ButtonImages:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   currentTexture: {fileID: 2800000, guid: a40e921cf92ae9947829bf1e212d85a8, type: 3}
   IncrementalNum: 0
   GalleryNum: 0
   showChoices: 0
+  image: []
+  galleryNumber: 0
+  imagedex: 0
+  builtinArray: []
 --- !u!1 &707309952
 GameObject:
   m_ObjectHideFlags: 0
