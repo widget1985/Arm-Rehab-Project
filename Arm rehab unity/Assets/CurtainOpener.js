@@ -1,4 +1,4 @@
-﻿//Written by Widget, 2013
+//Written by Widget, 2013
 /*
 //To do:
 var FadeOutOption : boolean;
@@ -68,7 +68,7 @@ function Start () {
 
 function GetValue(pinValue : int){
 //print(pinValue + "   " + (pinValue/1024));
-  ArduinoValue =  (1.0*pinValue)/1024.00;  
+  ArduinoValue =  (1.00*pinValue)/1024.00;  
 }
 
 // FadeInOut

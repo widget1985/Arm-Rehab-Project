@@ -24,7 +24,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,7 +47,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -60,9 +60,9 @@ AudioSource:
       outSlope: 0
       tangentMode: 0
     - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      value: 1
+      inSlope: -.0515249856
+      outSlope: -.0515249856
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -111,9 +111,11 @@ MonoBehaviour:
   DisplayGUI: 1
   fontSize: 26
   GameManagerObject: {fileID: 0}
+  LevelOneName: Curtains
+  LevelTwoName: Clapping
   songSelection: 0
   songs:
-  - {fileID: 8300000, guid: b6a19de0da438784898376a4a6c1a623, type: 3}
+  - {fileID: 8300000, guid: a600b9f7af05e53448aece0770851f2c, type: 3}
   - {fileID: 8300000, guid: 20812b526b6b01441809e0104c068bb2, type: 3}
   - {fileID: 8300000, guid: 4ae9f21a581431442b98b11bad0ea70e, type: 3}
   - {fileID: 8300000, guid: 190dc4aa6cb3967459e4b0aed8b4346f, type: 3}
@@ -134,11 +136,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9b0f68f7a36fea043a3c67df82bacc1a, type: 3}
   - {fileID: 8300000, guid: 075f86405fb5b4b0f937ba396bed7b28, type: 3}
   - {fileID: 8300000, guid: 9574fd75498a16e40b80091522c99e78, type: 3}
-  - {fileID: 8300000, guid: a600b9f7af05e53448aece0770851f2c, type: 3}
   state: 0
   previousChoices: 
-  currentLevel: 0
   textTime: 
+  currentLevel: 0
   image: []
   thumbImagesBuiltinArray: []
 --- !u!1001 &100100000

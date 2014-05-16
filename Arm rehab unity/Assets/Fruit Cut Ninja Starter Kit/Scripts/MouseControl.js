@@ -89,13 +89,13 @@ function AddTrailPosition() {
 if (linePart>9) {
 
 for (var i=0;i<=8;i++) trailPositions[i] = trailPositions[i+1];
-trailPositions[9] = Camera.mainCamera.ScreenToWorldPoint(Vector3(start.x, start.y, 10));
+trailPositions[9] = Camera.main.ScreenToWorldPoint(Vector3(start.x, start.y, 10));
 
 
 } else {
 
 for (var ii=linePart;ii<=9;ii++)
-				trailPositions[ii] = Camera.mainCamera.ScreenToWorldPoint(Vector3(start.x, start.y, 10));		
+				trailPositions[ii] = Camera.main.ScreenToWorldPoint(Vector3(start.x, start.y, 10));		
 
 }
 
@@ -136,8 +136,8 @@ function Control() {
 			start = screenInp;
 		
 			//distance on world space
-			var a = Camera.mainCamera.ScreenToWorldPoint(Vector3(start.x, start.y, 10));
-			var b = Camera.mainCamera.ScreenToWorldPoint(Vector3(end.x, end.y, 10));
+			var a = Camera.main.ScreenToWorldPoint(Vector3(start.x, start.y, 10));
+			var b = Camera.main.ScreenToWorldPoint(Vector3(end.x, end.y, 10));
 			
 			if (Vector3.Distance(a,b)>0.4) PlaySfx();
 			
@@ -159,7 +159,7 @@ function Control() {
 			for (var p = 0; p<8 ; p++) {
 			for (var i = 0; i < raycastCount; i++)
 			{
-				var ray : Ray = Camera.mainCamera.ScreenPointToRay(Vector3.Lerp(Camera.mainCamera.WorldToScreenPoint(trailPositions[p]),Camera.mainCamera.WorldToScreenPoint(trailPositions[p+1]), i * 1.0 / raycastCount * 1.0));
+				var ray : Ray = Camera.main.ScreenPointToRay(Vector3.Lerp(Camera.main.WorldToScreenPoint(trailPositions[p]),Camera.main.WorldToScreenPoint(trailPositions[p+1]), i * 1.0 / raycastCount * 1.0));
 				Debug.DrawLine(ray.origin,ray.direction * 10,Color.red,1.0);
 				
 				var hit : RaycastHit;
