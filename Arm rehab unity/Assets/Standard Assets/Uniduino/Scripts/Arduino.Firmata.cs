@@ -124,7 +124,8 @@ namespace Uniduino
 			
         protected void connect(string serialPortName, Int32 baudRate, bool autoStart, int delay)
         {
-            _serialPort = new SerialPort(serialPortName, baudRate);
+			 
+			_serialPort = new SerialPort(serialPortName, baudRate);
 			//_serialPort = Win32SerialPort.CreateInstance();
 			
 			_serialPort.DtrEnable = true; // win32 hack to try to get DataReceived event to fire

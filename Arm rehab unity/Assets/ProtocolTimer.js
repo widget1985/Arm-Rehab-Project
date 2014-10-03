@@ -25,7 +25,7 @@ var handValue : int = 0;
 var timeCases : int = 0;
 var timeValue : float = 0.0;
 var timeStrings : String[] = [" Five Minutes " , " Ten Mintues"];
-var handStrings : String[] = ["Left", "Right", "Both"];
+var handStrings : String[] = ["Left", "Right", "Both"];  
 var DisplayGUI : boolean = true;
 var fontSize : int = 26;
 var GameManagerObject : GameObject;
@@ -37,7 +37,8 @@ var songSelection : int; // Handle with setup
 var songs : AudioClip[]; //Handle with setup
 
 private var integerText = "";
-private var  Track = "";
+private var  Track = ""; 
+public var Threshold="";   //by SEDA
 
 public var state : LvlState = LvlState.Setup;
 
@@ -261,7 +262,12 @@ function OnGUI(){
 		 GUILayout.EndHorizontal();
 		// stringToEdit = GUILayout.TextField (stringToEdit, 500);
 }
-
+  
+         GUILayout.BeginHorizontal();   //by SEDA
+		 GUILayout.Label("ROM Threshold:");   //by SEDA, to ask the user to enter a threshold value.
+		 Threshold = GUILayout.TextField (Threshold, GUILayout.Width(50));  //by SEDA 
+		 GUILayout.EndHorizontal();
+       
 	//else if(levelValue == 1){
 	GUILayout.Label("Tracklist:");
 	scrollPosition = GUILayout.BeginScrollView ( scrollPosition, GUILayout.Width (800), GUILayout.Height (200));
@@ -332,7 +338,6 @@ function OnGUI(){
 	}
 
 }//onGUi
-
 
 
 private var filesLocation : String = "C:/Data";

@@ -107,7 +107,8 @@ namespace Uniduino.Helpers
 			string api_set_symbol = "UNIDUINO_API_LEVEL_SET";			
 			string define_line = "#define "+api_set_symbol+"\n";
 
-			string path = System.IO.Path.Combine(Application.dataPath, "Uniduino/Scripts/SerialPortProxy.cs");
+			//string path = System.IO.Path.Combine(Application.dataPath, "Uniduino/Scripts/SerialPortProxy.cs");
+			string path ="C:/Users/butterfly/Documents/GitHub/Arm-Rehab-Project/Arm rehab unity/Assets/Standard Assets/Uniduino/Scripts/SerialPortProxy.cs";
 			string script_contents = System.IO.File.ReadAllText(path);
 
             Debug.Log("Stripping existings #defines from " + path);

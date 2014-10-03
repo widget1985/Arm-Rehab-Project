@@ -35,7 +35,7 @@ var FadeOutPlane : GameObject;
 //var DisplayGUI : boolean = true;
 var GameRunning : boolean = true;
 var Tada : AudioClip;
-var changeSlideValue = 0.1; //originally 0.1
+var changeSlideValue = 0.9; //originally 0.1
 
 //Slide Stuff
 var slides : Texture2D[]  = new Texture2D[1];
@@ -71,8 +71,7 @@ function Start () {
 function GetValue(pinValue : int){
 //print(pinValue + "   " + (pinValue/1024)); 
   //print((pinValue/1024));
-  ArduinoValue = (pinValue)/1024.00;  
-   //ArduinoValue =(-0.74*2.8)+(2.8*pinValue)/1024.00;  //SEDA
+  ArduinoValue = (-0.74*2.8)+(2.8*pinValue)/1024.00;  
 }
 
 // FadeInOut
@@ -125,10 +124,7 @@ ArduinoCtrl = ! ArduinoCtrl;
 	//transform.position = Vector3.MoveTowards(transform.position, target.position, step);
     RCurtain.transform.position.x = Mathf.MoveTowards(RCurtain.transform.position.x, Mathf.Exp(targetValue * moveMultiplyer) + curatinOffset, .4);
     LCurtain.transform.position.x = Mathf.MoveTowards(LCurtain.transform.position.x, -Mathf.Exp(targetValue * moveMultiplyer) - curatinOffset, 0.4);
- 
-    
-   
-   
+
 //Slides Stuff
     if(currentSlide == slides.Length)//Does this work or matter anymore?
 	{
@@ -136,7 +132,7 @@ ArduinoCtrl = ! ArduinoCtrl;
 		audio.PlayOneShot(Tada);
 	}
 //	print("mathsround  "+Mathf.RoundToInt(newPos.x));
-     if(targetValue <= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CLUE.
+     if(targetValue >= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CUE ,seda(( should be <=))
       
      {
      //Change the slide

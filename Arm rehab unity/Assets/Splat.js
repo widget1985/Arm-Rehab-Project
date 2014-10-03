@@ -1,6 +1,6 @@
-﻿#pragma strict
-
-
+﻿#pragma strict 
+ 
+   
 var Clone : GameObject;
 var i : float = 0.1;
 

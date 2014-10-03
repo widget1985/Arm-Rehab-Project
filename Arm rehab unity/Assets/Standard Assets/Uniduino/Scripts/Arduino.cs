@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-
+using System.IO;
 
 #if (UNITY_3_0 || UNITY_3_0_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5)		
 public class Arduino : Uniduino.Arduino { } 
@@ -154,12 +154,11 @@ namespace Uniduino
 		public static string guessPortNameWindows()
 		{
 			var devices = System.IO.Ports.SerialPort.GetPortNames();
-			
-			if (devices.Length == 0) // 
-			{
-				return "COM3"; // probably right 50% of the time		
-			} else
-				return devices[0];				
+			print (devices[0]);
+			if (devices.Length == 0) { //
+								return "COM3"; // probably right 50% of the time		
+						} else
+								return devices[0];				
 		}
 	
 		public static string guessPortNameUnix()

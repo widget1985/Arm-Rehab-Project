@@ -1,24 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-<<<<<<< HEAD
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ProtocolTimer.js">
     <Files>
-      <File FileName="Assets\CurtainOpener.js" Line="1" Column="1" />
-      <File FileName="Arm rehab unity.sln" Line="76" Column="1" />
-      <File FileName="Assets\ProtocolTimer.js" Line="140" Column="27" />
-      <File FileName="Assets\WriteValues.js" Line="1" Column="1" />
-      <File FileName="Assets\Clapper.js" Line="145" Column="44" />
-      <File FileName="Assets\ImageNavigator.js" Line="1" Column="1" />
-=======
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ImageNavigator.js">
-    <Files>
-      <File FileName="Assets\ProtocolTimer.js" Line="192" Column="1" />
-      <File FileName="Assets\ProtocolTimer.js" Line="193" Column="55" />
-      <File FileName="Assets\WriteValues.js" Line="1" Column="1" />
-      <File FileName="Assets\CurtainOpener.js" Line="1" Column="1" />
-      <File FileName="Assets\Clapper.js" Line="1" Column="1" />
-      <File FileName="Assets\ImageNavigator.js" Line="37" Column="17" />
->>>>>>> e30752d38a9edfcef922232d224b7f129d0d9e05
+      <File FileName="Assets\CurtainOpener.js" Line="76" Column="2" />
+      <File FileName="Assets\ProtocolTimer.js" Line="267" Column="95" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

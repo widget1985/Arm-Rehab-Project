@@ -5,7 +5,7 @@ var ArduinoValue : float = 0 ;
 var fileLocation;
 var fileName = "/ArmData.txt"; //Add date to filename in start?
 var StartedRecording : boolean = false;
-var RangeOfMovement : float = 120.0;
+var RangeOfMovement : float = 30.0;
 var fullPath : String;
 var CreatedFile : boolean = false;
 
@@ -85,8 +85,8 @@ StartedRecording = true;
 function GetValue(pinValue : int){
 //print(pinValue + "   " + (pinValue/1024));
 //Do some math?
-	//if(StartedRecording){
-	ArduinoValue =  RangeOfMovement*(1.0*pinValue)/1024.00;
+	//if(StartedRecording)
+	ArduinoValue =  (pinValue)/1024.00;
 	//}
 }
 
