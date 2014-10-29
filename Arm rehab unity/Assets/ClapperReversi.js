@@ -64,7 +64,6 @@ var hands : GameObject[]; var maracas : GameObject[];var cymbals : GameObject[];
 private var integerText = "";
 private var  Track = "";
 private var DisplayGUI : boolean = false;
-public var Reversi : boolean = false;
 
 private var stringToEdit : String = "Write notes here";
 
@@ -73,12 +72,17 @@ private var stringToEdit : String = "Write notes here";
     var slideReady : boolean;
 
 
+
 function Start () {
 	Protocol = GameObject.Find("Protocol");
 	//GameRunning = false;
 	atEndGame = false;
 	TextTarget = GameObject.Find("GUI Text");
 	ChangeHandModel(0);
+}
+
+function SkyBoxTint(){
+	RenderSettings.skybox.SetColor("_Tint", Color( r/255, g/255, b/255, 0.5) ); //this is not really used or cared about.
 }
 
 function GetValue(pinValue : int){
@@ -93,7 +97,7 @@ if(Input.GetKeyUp(KeyCode.A)){
 ArduinoCtrl = ! ArduinoCtrl;
 }
 
-	if(!Reversi){
+	
 	if( ArduinoCtrl == true ){
 		targetValue = ArduinoValue - 1.0;
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
@@ -131,52 +135,18 @@ ArduinoCtrl = ! ArduinoCtrl;
 	Rhand.transform.rotation = Quaternion.Euler(0,-targetValue * 35,0);  //MAGIC NUMBERS!!!!! FIX 
 	Lhand.transform.rotation = Quaternion.Euler(0,targetValue * 35,0);
   }
- }//!reversi
- else{
- if( ArduinoCtrl == true ){
-		//targetValue = ArduinoValue - 1.0;
-		targetValue = ArduinoValue;
-		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
-		//print(targetValue);
-	}
-	
-	else{	
-		print("ReversiError");
-	}
-	
-	if(GameRunning){
-	
-	    if(targetValue > 1){				
-    
-   			targetValue = 1;
-	    }
-	    if (targetValue > innerLimit){
-   
-	   	 targetValue = innerLimit;
-    
-	    if(!hasClapped){
-		    Clap();
-		    hasClapped = true;
-	    }
-    }
-    
-    if(hasClapped && targetValue < 0){
-	    hasClapped = false;
-    }
-    //print(newPos.x);
-	Rhand.transform.rotation = Quaternion.Euler(0,-targetValue * 35,0);  //MAGIC NUMBERS!!!!! FIX 
-	Lhand.transform.rotation = Quaternion.Euler(0,targetValue * 35,0);
-  }
- }
 }
 
 function Clap(){
 
 	TotalClaps++;
-	audio.PlayOneShot(ClapSounds[clapSelection]); //Make some noize
+	//Make some noize
+	audio.PlayOneShot(ClapSounds[clapSelection]);
 	if(TotalClaps == 2 ){ //Clap once to begin
 	Protocol.SendMessage("BeginCountDown");
-	print("CountdownCall Sent To Protocol");	//Invoke("PlaySong", 0); //Send to protocol 	//Invoke("EndGame", songs[songSelection].length + 1);
+	print("CountdownCall Sent To Protocol");
+	//Invoke("PlaySong", 0); //Send to protocol
+	//Invoke("EndGame", songs[songSelection].length + 1);
 	}
 	if(FXPrefab){
 		var FX = Instantiate(FXPrefab);
@@ -248,16 +218,29 @@ GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);
 //	GUILayout.EndArea ();
 }
 
+
 function StopSong(){
-FXMuscialNotes.SetActive(false); //THis is a placeholder for actuall edited songs. //audio.Stop(); //var notes : gameObject = GameObject.Find("MusicalNotes");//Destroy(notes);
- 
+//THis is a placeholder for actuall edited songs. //audio.Stop(); //var notes : gameObject = GameObject.Find("MusicalNotes");//Destroy(notes);
+ FXMuscialNotes.SetActive(false);
 }
 
 function PlaySong(){
-}
-
-function SkyBoxTint(){
-	RenderSettings.skybox.SetColor("_Tint", Color( r/255, g/255, b/255, 0.5) ); //this is not really used or cared about.
+/*
+if(!audio.isPlaying){
+	//FXMuscialNotes.SetActive(true);
+	if(repeatSong){
+				
+		audio.PlayOneShot(songs[songSelection]);
+	}
+	
+	else{
+		
+		audio.PlayOneShot(songs[songSelection]);
+		//songSelection++;
+		}
+	}
+	//Display song name somehow
+	*/
 }
 
 function ChangeHandModel(model : int){
