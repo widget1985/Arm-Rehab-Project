@@ -531,6 +531,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e861b31e123c4c98a76869fd82d7b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reversi: 0
+  BlackScreen: 0
+  outerLimit: -1
   repNumber: 0
   numberGui: {fileID: 1840998671}
   RCurtain: {fileID: 974759786}

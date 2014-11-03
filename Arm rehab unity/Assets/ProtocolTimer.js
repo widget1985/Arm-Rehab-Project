@@ -1,6 +1,6 @@
 ﻿#pragma strict
 /************************************
-This script sets everything up, Persists through scenes, sends and records values.
+This script sets everything up, Persists through all scenes, sends and records values.
 
 
 ***********************************/
@@ -25,12 +25,15 @@ var handValue : int = 0;
 var timeCases : int = 0;
 var timeValue : float = 0.0;
 var timeStrings : String[] = [" Five Minutes " , " Ten Mintues"];
+
 var handStrings : String[] = ["Left", "Right", "Both"];  
 var DisplayGUI : boolean = true;
 var fontSize : int = 26;
 var GameManagerObject : GameObject;
 var LevelOneName : String = "Curtains";
 var LevelTwoName : String = "Clapping";
+var BlackScreen : boolean = false;
+var ReverseClap : boolean = false;
 
 //Music Stuff
 var songSelection : int; // Handle with setup
@@ -38,7 +41,7 @@ var songs : AudioClip[]; //Handle with setup
 
 private var integerText = "";
 private var  Track = ""; 
-public var Threshold="";   //by SEDA
+public var Threshold : float;   //by SEDA
 
 public var state : LvlState = LvlState.Setup;
 
@@ -81,16 +84,22 @@ function Awake () {
 	}
 
 function CheckLevel(){
-if(Application.isLoadingLevel){
-return;
-}
- if (Application.loadedLevel != currentLevel ){
- currentLevel = Application.loadedLevel;
- print("NewLevelWorkaround!");
- OnLevelWasLoaded(currentLevel);
- }
+	if(Application.isLoadingLevel){
+	return;
+	}
+	 if (Application.loadedLevel != currentLevel ){
+	 currentLevel = Application.loadedLevel;
+	 print("NewLevelWorkaround!");
+	 OnLevelWasLoaded(currentLevel);
+	 }
 }
 
+function GetValue(pinValue : int){
+//print(pinValue + "   " + (pinValue/1024)); 
+  //print((pinValue/1024));
+  ArduinoValue = (1.0*pinValue)/1024.00;  
+   //ArduinoValue =(-0.74*2.8)+(2.8*pinValue)/1024.00;  //SEDA
+}
 
 function StateChange( ){
 
@@ -202,10 +211,12 @@ startTime = Time.time;
 state = LvlState.Wait;
 GameManagerObject = GameObject.Find("GameManager");
 if(GameManagerObject){
-print("GameManagerFound!");
-newFileName = "_"+"_Clapping_"+handStrings[handValue]+"";
-GameManagerObject.SendMessage("CreateFile",newFileName);
-
+	print("GameManagerFound!");
+	newFileName = "_"+"_Clapping_"+handStrings[handValue]+"";
+	GameManagerObject.SendMessage("CreateFile",newFileName);
+	var clapperScript = GameManagerObject.GetComponent(Clapper);
+	clapperScript.BlackScreen = BlackScreen;
+	clapperScript.Reversi = ReverseClap;
 }
 else{print("WTF?  no gamemanager?");}
 
@@ -234,19 +245,20 @@ if(!audio.isPlaying){
 private var scrollPosition : Vector2;
 private var levelValue : int = 0;
 private var galleryValue : int = 0;
+private var windowRect : Rect = Rect ( Screen.width/2,Screen.height/2, 200	, 200);
+var ArmStretchToggle = false;
 function OnGUI(){
 
 //Maybe use GUIWindows instead?
 	if(state == LvlState.Setup){
-	GUILayout.BeginArea (Rect (10,10,800,520));
+		GUILayout.BeginArea (Rect (10,10,800,520));
 		GUI.skin.label.wordWrap = true;
 		GUILayout.Label(previousChoices);
 
 		handValue = GUILayout.SelectionGrid (handValue, handStrings, 3);
-	levelValue = GUILayout.SelectionGrid(levelValue, ["Curtain game", "Clapping Game"],2);
+		levelValue = GUILayout.SelectionGrid(levelValue, ["Curtain game", "Clapping Game"],2);
 	//GUILayout.EndArea ();
 	//GUILayout.BeginArea (Rect (10,85,800,800));
-
 		timeCases = GUILayout.SelectionGrid (timeCases, timeStrings, 3);
 		timeValue = timeCases*5 + 5; //Dumb
 		//SHoW SOME PICTURES.
@@ -255,17 +267,23 @@ function OnGUI(){
 
 		for(var thumbImage : Texture2D in thumbImagesBuiltinArray){
 		//if(GUILayout.Button(thumbImage, GUILayout.Width(100), GUILayout.Height(100))){}
-
 		}
 		 galleryValue = GUILayout.SelectionGrid( galleryValue, thumbImagesBuiltinArray,7,GUILayout.Width(800), GUILayout.Height(110));
-
 		 GUILayout.EndHorizontal();
 		// stringToEdit = GUILayout.TextField (stringToEdit, 500);
-}
-  
+		}
+		else{
+		BlackScreen = GUILayout.Toggle(BlackScreen,"Black Screen?");
+		}
+		
+		ArmStretchToggle = GUILayout.Toggle(ArmStretchToggle,"Record Max Arm Threshold");
+  		if(ArmStretchToggle){
+  		windowRect = GUI.Window (0, windowRect, DoMyWindow, "Open and close your arms!");
+  		}
+  		
          GUILayout.BeginHorizontal();   //by SEDA
-		 GUILayout.Label("ROM Threshold:");   //by SEDA, to ask the user to enter a threshold value.
-		 Threshold = GUILayout.TextField (Threshold, GUILayout.Width(50));  //by SEDA 
+		 //GUILayout.Label("ROM Threshold:");   //by SEDA, to ask the user to enter a threshold value.
+//		 Threshold = GUILayout.TextField (Threshold, GUILayout.Width(50));  //by SEDA 
 		 GUILayout.EndHorizontal();
        
 	//else if(levelValue == 1){
@@ -308,20 +326,18 @@ function OnGUI(){
 	}//Setup
 
 	if(state == LvlState.Wait){
+		if(currentLevel == 1){
+	 		GUI.skin.button.fontSize = fontSize;
 
-	if(currentLevel == 1){
- 		GUI.skin.button.fontSize = fontSize;
-
-		if(GUILayout.Button("StartGame")){
-			startTime = Time.time;
-			BeginCountDown();
-			state = LvlState.InProgress;
-		}//StartgameButton
-	}
-	else if(currentLevel == 2){
-	GUILayout.Label("Clap to start song!"); //should go away when we change level state
-
-	}
+			if(GUILayout.Button("StartGame")){
+				startTime = Time.time;
+				BeginCountDown();
+				state = LvlState.InProgress;
+			}//StartgameButton
+		}
+		else if(currentLevel == 2){
+			GUILayout.Label("Clap to start song!"); //should go away when we change level state
+		}
 	}//Wait
 	if(state == LvlState.InProgress){
 		var guiTime = (timeValue*60) - (Time.time - startTime);
@@ -334,10 +350,28 @@ function OnGUI(){
 		GUI.skin.label.fontSize = 20;
 		GUI.Label(Rect(10,40,400,400) ,"Time Remaining "+textTime);
 		GUI.skin.label.fontSize = 12;
-		
-	}
+	}//inprogress
 
 }//onGUi
+
+var ArbitaryResetValue : float = 0.7;
+var ArduinoValue : float;
+
+function DoMyWindow (windowID : int) {
+		if(Threshold<ArduinoValue){
+			Threshold = ArduinoValue;
+			}
+			if(ArduinoValue >= ArbitaryResetValue){//this should be a range!
+			Threshold = 0	;
+			}
+			GUILayout.Label("threshold is "+Threshold);//Maybe set to degrees
+		
+		if (GUILayout.Button("Click when done")){
+			ArmStretchToggle = false;
+			}
+			// Make the windows be draggable.
+		GUI.DragWindow (Rect (0,0,10000,10000));
+	}
 
 
 private var filesLocation : String = "C:/Data";

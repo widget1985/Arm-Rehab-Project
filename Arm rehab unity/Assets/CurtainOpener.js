@@ -2,11 +2,13 @@
 /*
 //To do:
 var FadeOutOption : boolean;
-
-
 */
 
 private var Protocol;
+public var Reversi : boolean = false;
+public var BlackScreen : boolean = false;// Handle with setup
+public var outerLimit : float = -1.0;// Handle with setup //do not adjust your tv set
+
 var repNumber : int = 0;
 var numberGui : GameObject;
 var RCurtain : GameObject;
@@ -71,7 +73,7 @@ function Start () {
 function GetValue(pinValue : int){
 //print(pinValue + "   " + (pinValue/1024)); 
   //print((pinValue/1024));
-  ArduinoValue = (pinValue)/1024.00;  
+  ArduinoValue = (1.0*pinValue)/1024.00;  
    //ArduinoValue =(-0.74*2.8)+(2.8*pinValue)/1024.00;  //SEDA
 }
 
@@ -87,25 +89,25 @@ var drawDepth = -1000;
 private var alpha = 1.0; 
  
 private var fadeDir = -1;
- 
-function fadeIn(){
-//print("Fading_In");
-	fadeDir = -1;	
-}
-  
-function fadeOut(){
-//print("Fading_Out");
-	fadeDir = 1;	
-}
 
-function Update ()
-{
+function Update () {
+	if(Input.GetKeyUp(KeyCode.A)) {
+	ArduinoCtrl = ! ArduinoCtrl;
+	}
+	if(!Reversi) {
+	Curtain();
+	}
+	else{
+	ReverseCurtain();
+	}
+}//update
 
-if(Input.GetKeyUp(KeyCode.A)){
-ArduinoCtrl = ! ArduinoCtrl;
-}
-	if( ArduinoCtrl == true ){
-		targetValue = ArduinoValue - 1.0;
+function ReverseCurtain(){
+
+changeSlideValue = -outerLimit; //ROUGH DRAFT.  MIGHT NEED grace range
+
+if( ArduinoCtrl == true ) {
+		targetValue = ArduinoValue - 1.0;// HERE REVERSI
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
 		//print(targetValue); //
 	}
@@ -117,26 +119,22 @@ ArduinoCtrl = ! ArduinoCtrl;
 	}
     // this.transform.position.z = Mathf.Lerp(this.transform.position.z,  newPos.z , Time.time);
     //print(mousePos.x + " is the mouse pos " + newPos.x + " is the mouse to world point");  
-    if(targetValue > 1.0){
+    if(targetValue > 1.0) {
     	targetValue = 1.0;
-    	//Invoke("fadeIn", FadeOutTimer);
     }    
+    
     //var step = speed * Time.deltaTime;			// Move our position a step closer to the target.
 	//transform.position = Vector3.MoveTowards(transform.position, target.position, step);
     RCurtain.transform.position.x = Mathf.MoveTowards(RCurtain.transform.position.x, Mathf.Exp(targetValue * moveMultiplyer) + curatinOffset, .4);
     LCurtain.transform.position.x = Mathf.MoveTowards(LCurtain.transform.position.x, -Mathf.Exp(targetValue * moveMultiplyer) - curatinOffset, 0.4);
  
-    
-   
-   
 //Slides Stuff
-    if(currentSlide == slides.Length)//Does this work or matter anymore?
-	{
+    if(currentSlide == slides.Length) {//Does this work or matter anymore?
 		currentSlide = 0;
 		audio.PlayOneShot(Tada);
 	}
 //	print("mathsround  "+Mathf.RoundToInt(newPos.x));
-     if(targetValue <= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CLUE.
+     if(targetValue <= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CLUE.######################## REVERSI
       
      {
      //Change the slide
@@ -149,8 +147,7 @@ ArduinoCtrl = ! ArduinoCtrl;
      var LvlState;
      if(repNumber <= 1 && Protocol.GetComponent(ProtocolTimer) != null){
      //Have a null value catcher here.
-    
-     var poop = Protocol.GetComponent(ProtocolTimer).state;
+  //   var theState = Protocol.GetComponent(ProtocolTimer).state;
  //Protocol.GetComponent(ProtocolTimer).state = LvlState.Wait;
      }
      else if (repNumber >= 1){
@@ -173,7 +170,76 @@ ArduinoCtrl = ! ArduinoCtrl;
       if(!IsInvoking("fadeOut")){
      Invoke("fadeOut", FadeOutTimer);
      }
-     }    
+     }  
+}
+
+function Curtain(){
+	if( ArduinoCtrl == true ){
+		targetValue = ArduinoValue - 1.0;
+		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
+		//print(targetValue); //
+	}
+	else{
+	  var mousePos = Input.mousePosition ;
+	  mousePos.z = 1; // select distance = 10 units from the camera
+	  var newPos  = (Camera.main.ScreenToWorldPoint(mousePos));
+	  targetValue	= newPos.x;
+	}
+    // this.transform.position.z = Mathf.Lerp(this.transform.position.z,  newPos.z , Time.time);
+    //print(mousePos.x + " is the mouse pos " + newPos.x + " is the mouse to world point");  
+    if(targetValue > 1.0){
+    	targetValue = 1.0;
+    }    
+    
+    //var step = speed * Time.deltaTime;			// Move our position a step closer to the target.
+	//transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+    RCurtain.transform.position.x = Mathf.MoveTowards(RCurtain.transform.position.x, Mathf.Exp(targetValue * moveMultiplyer) + curatinOffset, .4);
+    LCurtain.transform.position.x = Mathf.MoveTowards(LCurtain.transform.position.x, -Mathf.Exp(targetValue * moveMultiplyer) - curatinOffset, 0.4);
+ 
+   
+//Slides Stuff
+    if(currentSlide == slides.Length) {//Does this work or matter anymore?
+		currentSlide = 0;
+		audio.PlayOneShot(Tada);
+	}
+//	print("mathsround  "+Mathf.RoundToInt(newPos.x));
+     if(targetValue <= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CLUE.
+      
+     {
+     //Change the slide
+       ImageNavigator.SendMessage("ChangeImg");
+      print("Change the slide!");
+        
+        Invoke("fadeIn", 0);
+     
+       repNumber++;
+     var LvlState;
+     if(repNumber <= 1 && Protocol.GetComponent(ProtocolTimer) != null){
+     //Have a null value catcher here.
+  //   var theState = Protocol.GetComponent(ProtocolTimer).state;
+ //Protocol.GetComponent(ProtocolTimer).state = LvlState.Wait;
+     }
+     else if (repNumber >= 1){
+   // Protocol.GetComponent(ProtocolTimer).state = LvlState.InProgress;
+
+     }
+     
+     if (numberGui){  
+       numberGui.guiText.text = repNumber.ToString() + " reps";
+     }
+		CancelInvoke("fadeOut");
+	//	CancelInvoke("fadeIn");
+       slideReady = true;
+       
+       
+     }
+     else if(targetValue > .75){//this used to be rounded to int, why did i do tht?
+     slideReady = false;
+     CancelInvoke("fadeIn");
+      if(!IsInvoking("fadeOut")){
+     Invoke("fadeOut", FadeOutTimer);
+     }
+     }  
 }
 
 var atEndGame : boolean;
@@ -193,5 +259,13 @@ function OnGUI(){
     FadeOutPlane.renderer.material.color.a = alpha;
 	//GUI.DrawTexture(Rect(0, 0, Screen.width, Screen.height), fadeOutTexture);
 	}
+}
+
+function fadeIn() {
+	fadeDir = -1;	//print("Fading_In");
+}
+  
+function fadeOut() {
+	fadeDir = 1;	//print("Fading_Out");
 }
 

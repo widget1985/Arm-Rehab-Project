@@ -1,8 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Clapper.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/JukeBox/Scripts/Jukebox.cs">
     <Files>
-      <File FileName="Assets/Clapper.js" Line="194" Column="20" />
+      <File FileName="Assets/ProtocolTimer.js" Line="1" Column="1" />
+      <File FileName="Assets/CurtainOpener.js" Line="1" Column="1" />
+      <File FileName="Assets/Clapper.js" Line="1" Column="1" />
+      <File FileName="Assets/ImageNavigator.js" Line="1" Column="1" />
+      <File FileName="Assets/JukeBox/Scripts/Jukebox.cs" Line="55" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

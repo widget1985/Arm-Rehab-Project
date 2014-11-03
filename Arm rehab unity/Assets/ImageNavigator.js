@@ -84,7 +84,7 @@ function ChangeGallery( num : int){ //Depreciated
 }
 
 function ReverseImg(){
-if(IncrementalNum > 1){
+if(IncrementalNum > 1 && (builtinArray.length > 0)){
 IncrementalNum = IncrementalNum - 2  ; //This works, but I have no idea why
 ChangeImg();
 print("Last Image");
@@ -94,20 +94,22 @@ print("Last Image");
 
 function ChangeImg(){
 //print("time to change the image");
-if(IncrementalNum < builtinArray.length){
+if((builtinArray.length > 0)){  //Added to fix errant testng bugs, let me know if it broke anyhting
+if(IncrementalNum < builtinArray.length) {
 	
 		var texture : Texture2D  = builtinArray[IncrementalNum] as Texture2D;
 		currentTexture = texture;
 		IncrementalNum++;
 		
 	}
-	else{
+	else {
 		IncrementalNum = 0;
 		ChangeImg();
-	}	
+		}	
 		
-	if(currentTexture != null){
-		MovieScreen.renderer.material.mainTexture = currentTexture;
+		if(currentTexture != null) {
+			MovieScreen.renderer.material.mainTexture = currentTexture;
+		}
 	}
 }
 //JUNK Sunk Below Here:

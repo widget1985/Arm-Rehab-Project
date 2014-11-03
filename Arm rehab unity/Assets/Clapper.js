@@ -5,27 +5,28 @@
 
 var FadeOutOption : boolean;
 
-Version 2.0 For protocol.  Eliminated GUI, Will add in hooks for protocol script
-
 //
 */
+
 @script RequireComponent(AudioSource)
 private var Protocol;
+
+public var BlackScreen : boolean = false;// Handle with setup
+public var outerLimit : float = -1.0;// Handle with setup //do not adjust your tv set
+public var Reversi : boolean = false;
+
 var atEndGame : boolean;
 
 var BlackTexture : Texture2D;
+
+var DarkScreenObject : GameObject;
 var ArduinoAdjustMult : float;
 var ArduinoAdjustSub : float;
 //user settings
 private var repeatSong : boolean;
 var songSelection : int; // Handle with setup
 var songs : AudioClip[]; //Handle with setup
-//Put back in later?
-/*
-private var RepsBeforeReward : int = 2; 
-private var incrementalReward : boolean;
-private var incrementValue : int = 2;
-*/
+
 private var GameRunning : boolean = true;
 //
 var Rhand : GameObject;
@@ -53,7 +54,8 @@ var ClapNumber : int;  //NOTE: Right now number can't go above 9.
 var TotalClaps : int;
 //not sure how to use this, but it is made NOT to be reset.
 var innerLimit : float = 0.7;
-var outerLimit : float = -1.0;//do not adjust your tv set
+
+
 
 private var r: float = 00.0; private var g: float = 100.0; private var b : float= 50.0; //Background color
 
@@ -64,14 +66,12 @@ var hands : GameObject[]; var maracas : GameObject[];var cymbals : GameObject[];
 private var integerText = "";
 private var  Track = "";
 private var DisplayGUI : boolean = false;
-public var Reversi : boolean = false;
 
 private var stringToEdit : String = "Write notes here";
 
 @System.NonSerialized
-    var currentSlide : int = 0;
-    var slideReady : boolean;
-
+var mousePos;//moved out of update
+var newPos;//moved out of update
 
 function Start () {
 	Protocol = GameObject.Find("Protocol");
@@ -79,6 +79,17 @@ function Start () {
 	atEndGame = false;
 	TextTarget = GameObject.Find("GUI Text");
 	ChangeHandModel(0);
+	if(Reversi) {
+	TextTarget.guiText.text = "Open Your Arms!";
+	}
+	if(BlackScreen) {
+	//DarkScreenObject.SetActive(true);//Doesn't work for whatever reason.
+	DarkScreenObject.renderer.enabled = true; 
+		}
+	else{
+		DarkScreenObject.renderer.enabled = false;
+
+	}
 }
 
 function GetValue(pinValue : int){
@@ -89,21 +100,30 @@ ArduinoValue =  (1.0*pinValue)/1024.00;//Normalize between 0 and 1;
 function Update ()
 {
 	
+	
 if(Input.GetKeyUp(KeyCode.A)){
 ArduinoCtrl = ! ArduinoCtrl;
 }
 
-	if(!Reversi){
-	if( ArduinoCtrl == true ){
+if(Reversi){
+	 MoveHandsOut();
+ }
+ else{
+ MoveHandsIn();
+ }
+}
+
+function MoveHandsIn(){
+ if( ArduinoCtrl == true ){
 		targetValue = ArduinoValue - 1.0;
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
 		//print(targetValue);
 	}
 	
 	else{
-		var mousePos = Input.mousePosition ;
+		 mousePos = Input.mousePosition ;
 		mousePos.z = 1; // select distance = 10 units from the camera
-		var newPos  = (Camera.main.ScreenToWorldPoint(mousePos));
+		 newPos  = (Camera.main.ScreenToWorldPoint(mousePos));
 		targetValue	= newPos.x;
 	//	print(targetValue);  //Might need investigation
 	}
@@ -114,7 +134,7 @@ ArduinoCtrl = ! ArduinoCtrl;
     
    			targetValue = 1;
 	    }
-	    if (targetValue > innerLimit){
+	if (targetValue > innerLimit){
    
 	   	 targetValue = innerLimit;
     
@@ -131,28 +151,35 @@ ArduinoCtrl = ! ArduinoCtrl;
 	Rhand.transform.rotation = Quaternion.Euler(0,-targetValue * 35,0);  //MAGIC NUMBERS!!!!! FIX 
 	Lhand.transform.rotation = Quaternion.Euler(0,targetValue * 35,0);
   }
- }//!reversi
- else{
+
+}
+
+function MoveHandsOut(){
+ 
  if( ArduinoCtrl == true ){
 		//targetValue = ArduinoValue - 1.0;
 		targetValue = ArduinoValue;
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
-		//print(targetValue);
+		print(targetValue);
 	}
 	
-	else{	
-		print("ReversiError");
+	else{
+		 mousePos = Input.mousePosition ;
+		mousePos.z = 1; // select distance = 10 units from the camera
+		 newPos  = (Camera.main.ScreenToWorldPoint(mousePos));
+		targetValue	= newPos.x;
+		print(targetValue);  //Might need investigation
 	}
 	
 	if(GameRunning){
 	
-	    if(targetValue > 1){				
+	    if(targetValue > innerLimit){				
     
-   			targetValue = 1;
+   			targetValue = innerLimit;
 	    }
-	    if (targetValue > innerLimit){
+	    if (targetValue < outerLimit){
    
-	   	 targetValue = innerLimit;
+	   	 targetValue = outerLimit;
     
 	    if(!hasClapped){
 		    Clap();
@@ -160,14 +187,13 @@ ArduinoCtrl = ! ArduinoCtrl;
 	    }
     }
     
-    if(hasClapped && targetValue < 0){
+    if(hasClapped && targetValue > 0) {
 	    hasClapped = false;
     }
     //print(newPos.x);
 	Rhand.transform.rotation = Quaternion.Euler(0,-targetValue * 35,0);  //MAGIC NUMBERS!!!!! FIX 
 	Lhand.transform.rotation = Quaternion.Euler(0,targetValue * 35,0);
   }
- }
 }
 
 function Clap(){
@@ -183,9 +209,11 @@ function Clap(){
 		FX.AddComponent ("TimedObjectDestructor");
 		FX.transform.position.z  -= 5;
 	}
-	
-	if(TextTarget){	
-		TextTarget.guiText.text = "" + (TotalClaps) +" Claps!"; 
+	if(!Reversi){
+	TextTarget.guiText.text = "" + (TotalClaps) +" Claps!"; 
+	}
+	else{
+	TextTarget.guiText.text = "" + (TotalClaps) +" Reps!";
 	}
 
 }
@@ -225,12 +253,9 @@ GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);
 //		 	GUILayout.Label("incrementValue, default is 2 ");
 //		    integerText = GUILayout.TextField (integerText, GUILayout.Width(50));
 //			    if(integerText != null ){
-//				    if (int.TryParse(integerText, incrementValue)){
-//				   // print(incrementValue);
+//				    if (int.TryParse(integerText, incrementValue)){   // print(incrementValue);
 //				    }
-//				    else{
-//				    incrementValue = 2;
-//				    }
+//				    else{ incrementValue = 2;}
 //			    }
 //		 GUILayout.EndHorizontal();
        

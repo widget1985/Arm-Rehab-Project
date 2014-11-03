@@ -53,8 +53,6 @@ namespace Uniduino.Examples
 //				print ("SendingMessgae");
 			}
 		}
-		
-		
 	}
 }
 
