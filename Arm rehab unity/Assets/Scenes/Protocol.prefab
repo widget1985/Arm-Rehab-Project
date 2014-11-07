@@ -28,6 +28,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 1
@@ -113,33 +114,18 @@ MonoBehaviour:
   GameManagerObject: {fileID: 0}
   LevelOneName: Curtains
   LevelTwoName: Clapping
+  BlackScreen: 0
+  ReverseClap: 0
   songSelection: 0
-  songs:
-  - {fileID: 8300000, guid: a600b9f7af05e53448aece0770851f2c, type: 3}
-  - {fileID: 8300000, guid: 20812b526b6b01441809e0104c068bb2, type: 3}
-  - {fileID: 8300000, guid: 4ae9f21a581431442b98b11bad0ea70e, type: 3}
-  - {fileID: 8300000, guid: 190dc4aa6cb3967459e4b0aed8b4346f, type: 3}
-  - {fileID: 8300000, guid: 30bfbf6a1e4625a4c9f5d8acc741cfe1, type: 3}
-  - {fileID: 8300000, guid: 2e14ef54a01cc9c48b6b138ae48432c9, type: 3}
-  - {fileID: 8300000, guid: 077a60c63caede84690926f6fa9ab0c2, type: 3}
-  - {fileID: 8300000, guid: 56d6412d07144ce4c93e75f7bf5a33bc, type: 3}
-  - {fileID: 8300000, guid: e16168d2082fb0c4c862df382cffecf9, type: 3}
-  - {fileID: 8300000, guid: 0ae7882596ff9b7478c40284cadb17a4, type: 3}
-  - {fileID: 8300000, guid: c7d3c1bcd9c64584e97ae16fee27b21d, type: 3}
-  - {fileID: 8300000, guid: df4b2920a0fca63478cd543cb363b544, type: 3}
-  - {fileID: 8300000, guid: 37ffd113de6a1374d88b1824fc051a61, type: 3}
-  - {fileID: 8300000, guid: 11985a67287cabb43a2044ccb98b19ca, type: 3}
-  - {fileID: 8300000, guid: ab95a0fd76fa3354baa151d07d2533a2, type: 3}
-  - {fileID: 8300000, guid: 381637267f65da3439852ab349558a80, type: 3}
-  - {fileID: 8300000, guid: c0bd6c1166217684ea28a1ef51de592c, type: 3}
-  - {fileID: 8300000, guid: 7c9165facccc7dd46a1839526ff1bc6c, type: 3}
-  - {fileID: 8300000, guid: 9b0f68f7a36fea043a3c67df82bacc1a, type: 3}
-  - {fileID: 8300000, guid: 075f86405fb5b4b0f937ba396bed7b28, type: 3}
-  - {fileID: 8300000, guid: 9574fd75498a16e40b80091522c99e78, type: 3}
+  songs: []
+  Threshold: 0
   state: 0
   previousChoices: 
   textTime: 
   currentLevel: 0
+  ArmStretchToggle: 0
+  ArbitaryResetValue: .699999988
+  ArduinoValue: 0
   image: []
   thumbImagesBuiltinArray: []
 --- !u!1001 &100100000

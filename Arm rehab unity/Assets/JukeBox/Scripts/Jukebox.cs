@@ -117,6 +117,8 @@ public class Jukebox : MonoBehaviour
     /// </summary>
     public void NextTrack()
     {
+		CancelInvoke();
+		source.Stop();
         Stop();
         if (playlists[currentPlaylist].songs.Count > 0)
         {
@@ -189,6 +191,7 @@ public class Jukebox : MonoBehaviour
     public void Play()
     {
         CancelInvoke();
+		Debug.Log ("playlist amount "+playlists.Count);
         if (playlists.Count > 0 && playlists[currentPlaylist].songs.Count > currentSong && currentSong >= 0)
         {
             currentSong = Mathf.Clamp(currentSong, 0, playlists[currentPlaylist].songs.Count - 1);
@@ -285,9 +288,10 @@ public class Jukebox : MonoBehaviour
     /// </summary>
     /// <returns>Returns a string of the [Artist] - [Song]</returns>
     public string CurrentSong()
-    {
+   {
+		Debug.Log ("CurrentSongCalled");
         return playlists[currentPlaylist].songs[currentSong].ToString();
-    }
+   }
     /// <summary>
     /// The current playlist name
     /// </summary>
@@ -349,6 +353,7 @@ public class Jukebox : MonoBehaviour
         {
             Debug.LogError("Folder: " + folder + " does not exist");
         }
+		currentPlaylist = 2;
 #endif
     }
     /// <summary>
@@ -420,7 +425,7 @@ public class Jukebox : MonoBehaviour
                 source.time = value;
                 if (playlists[currentPlaylist].songs[currentSong].clip.length - source.time <= 0)
                 {
-                    NextTrack();
+					NextTrack(); Debug.Log("Next Track");
                 }
                 else
                 {

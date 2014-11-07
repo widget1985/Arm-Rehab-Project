@@ -213,7 +213,7 @@ public class JukeBoxInspector : Editor
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.BeginVertical();
                 {
-                    box.currentSong = EditorGUILayout.IntSlider(box.currentSong, 0, box.playlists[box.currentPlaylist].songs.Count - 1);
+                 //   box.currentSong = EditorGUILayout.IntSlider(box.currentSong, 0, box.playlists[box.currentPlaylist].songs.Count - 1); //Widget
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -286,7 +286,7 @@ public class JukeBoxInspector : Editor
             {
                 box.Play();
             }
-            GUILayout.Label("Current Song: " + box.CurrentSong());
+        //    GUILayout.Label("Current Song: " + box.CurrentSong()); //Widget
         }
         #endregion
         if (GUI.changed)

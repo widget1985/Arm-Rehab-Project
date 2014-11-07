@@ -237,7 +237,7 @@ print("Trying to play song");
 //audio.clip = songs[songSelection];
 if(!audio.isPlaying){
 	//audio.clip = songs[songSelection];
-		audio.Play();
+	//	audio.Play(); DEPRECIATED  use Jukebox asset INSTEAD
 	}
 	//Display song name somehow
 }
