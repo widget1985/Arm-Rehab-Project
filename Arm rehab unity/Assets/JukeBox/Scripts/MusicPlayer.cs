@@ -159,7 +159,7 @@ public class MusicPlayer : MonoBehaviour
                 {
                     if (GUI.Button(new Rect(185, 170, 40, 25), playButton))
                     {
-                        box.Pause();
+                        box.Play();
                     }
                 }
                 GUI.Label(new Rect(275, 165, 100, 25), box.Volume.ToString("F0"));
