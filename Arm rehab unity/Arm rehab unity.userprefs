@@ -1,15 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\JukeBox\Scripts\MusicPlayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ProtocolTimer.js">
     <Files>
-      <File FileName="Assets\JukeBox\Scripts\Jukebox.cs" Line="195" Column="27" />
-      <File FileName="Assets\JukeBox\Scripts\MusicPlayer.cs" Line="217" Column="2" />
+      <File FileName="Assets\ProtocolTimer.js" Line="381" Column="33" />
+      <File FileName="Assets\JukeBox\Scripts\Jukebox.cs" Line="1" Column="1" />
       <File FileName="Assets\Standard Assets\Uniduino\Scripts\Arduino.cs" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Scripts\SongDisplay.cs" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Scripts\Song.cs" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Scripts\PlayList.cs" Line="1" Column="1" />
-      <File FileName="Assets\ProtocolTimer.js" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Editor\JukeBoxInspector.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AnalogReadGear.cs" Line="36" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

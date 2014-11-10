@@ -9,51 +9,55 @@ public class AnalogRead : Uniduino.Examples.AnalogRead { } // for unity 3.x
 
 namespace Uniduino.Examples
 {
-	
-	public class AnalogReadGear : MonoBehaviour {
-		
-		public Arduino arduino;
-		
-		private GameObject cube;
-		
-		public int pin = 0;
-		public int pinValue;
-		public float spinSpeed;
-		public GameObject Manager;
-		public Component ManagerScript;
-		private int oldPinValue;
-
-		void Start () {
-		
-			arduino = Arduino.global;
-			arduino.Log = (s) => Debug.Log("Arduino: " +s);
-			arduino.Setup(ConfigurePins);
-			
-			//cube = GameObject.Find("Cube");
-			//Manager = this.gameObject;  //THis is stupid.
-			//ManagerScript = Manager.GetComponent<CurtainOpener>(); //DAMMIT SCRIPT ORDER
-			
-		}
-		
-		void ConfigurePins( )
+		public class AnalogReadGear : MonoBehaviour
 		{
-			arduino.pinMode(pin, PinMode.ANALOG);
-			arduino.reportAnalog(pin, 1);
-		}
 		
-		void Update () {
+				public Arduino arduino;
+				private GameObject cube;
+				public int pin = 0;
+				public int pinValue;
+				public float spinSpeed;
+				public GameObject Manager;
+				public Component ManagerScript;
+				private int oldPinValue;
+
+				void Start ()
+				{
+		
+						arduino = Arduino.global;
+						arduino.Log = (s) => Debug.Log ("Arduino: " + s);
+						arduino.Setup (ConfigurePins);
 			
-			oldPinValue = pinValue;
+						if (Application.loadedLevel == 0) { //Stopgap to set threshold in menu scene
+								Invoke ("Protocal", 5);
+						}
+				}
+		
+				void ConfigurePins ()
+				{
+						arduino.pinMode (pin, PinMode.ANALOG);
+						arduino.reportAnalog (pin, 1);
+				}
+
+				void Protocal ()
+				{  //Stopgap to set threshold in menu scene
+						Manager = GameObject.Find ("Protocol");
+				}
+		
+				void Update ()
+				{
 			
-			pinValue = arduino.analogRead(pin);
+						oldPinValue = pinValue;
+			
+						pinValue = arduino.analogRead (pin);
 //			cube.transform.rotation = Quaternion.Euler(0,pinValue*spinSpeed,0);
 			
-			if(oldPinValue != pinValue){
-			Manager.BroadcastMessage("GetValue", pinValue, SendMessageOptions.DontRequireReceiver);
+						if (oldPinValue != pinValue) {
+								Manager.BroadcastMessage ("GetValue", pinValue, SendMessageOptions.DontRequireReceiver);
 //				print ("SendingMessgae");
-			}
+						}
+				}
 		}
-	}
 }
 
 

@@ -18,6 +18,7 @@ public class JukeBoxInspector : Editor
     /// </summary>
     public override void OnInspectorGUI()
     {
+
         box = (Jukebox)target;
         #region PlaylistAssign
         showPlaylistSection = EditorGUILayout.Foldout(showPlaylistSection, "Playlists");
@@ -288,6 +289,7 @@ public class JukeBoxInspector : Editor
             }
         //    GUILayout.Label("Current Song: " + box.CurrentSong()); //Widget
         }
+
         #endregion
         if (GUI.changed)
             EditorUtility.SetDirty(target);

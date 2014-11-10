@@ -24,7 +24,7 @@ var stringToEdit : String = "Write Notes Here";
 var handValue : int = 0;
 var timeCases : int = 0;
 var timeValue : float = 0.0;
-var timeStrings : String[] = [" Five Minutes " , " Ten Mintues"];
+var timeStrings : String[] = ["One Minute"," Five Minutes " , " Ten Mintues"];
 
 var handStrings : String[] = ["Left", "Right", "Both"];  
 var DisplayGUI : boolean = true;
@@ -61,10 +61,10 @@ function Update(){
 
  if (Input.GetKeyDown(KeyCode.P)){ //P for PLAY!
 	if(!audio.isPlaying){
-	PlaySong();
+	 PlaySong();
 	}
 	else{audio.Pause();}
-	}
+ }
 
 
 if (Input.GetKeyDown(KeyCode.Escape)){ //esc goes back to start
@@ -85,12 +85,12 @@ function Awake () {
 
 function CheckLevel(){
 	if(Application.isLoadingLevel){
-	return;
+	 return;
 	}
 	 if (Application.loadedLevel != currentLevel ){
-	 currentLevel = Application.loadedLevel;
-	 print("NewLevelWorkaround!");
-	 OnLevelWasLoaded(currentLevel);
+		 currentLevel = Application.loadedLevel;
+		 print("NewLevelWorkaround!");
+		 OnLevelWasLoaded(currentLevel);
 	 }
 }
 
@@ -140,7 +140,7 @@ public function BeginCountDown(){
  	//Limit to 5 or ten minutes instead  //timeValue = ((audio.clip.length + 0.000) / 60.000);
  	//print(audio.clip.length/60 + "setting time value to "+timeValue);
  	//startTime = Time.time;
- 	PlaySong();
+ 	//PlaySong();  //MUSIC NOW HANDLED BY JUKEBOX
  	Invoke("EndExercise",timeValue * 60);// audioclips are in seconds
 
  	print("CountDownBegun");
@@ -160,7 +160,7 @@ public function BeginCountDown(){
 
  	Invoke("EndExercise",timeValue * 60);// audioclips are in seconds
 
- 	PlaySong();
+ 	//PlaySong();
  	print("CountDownBegun");
 
  }//else if lvl 2
@@ -196,40 +196,40 @@ function OnLevelWasLoaded(level : int){  //lets assume the main menu is 0 and th
 			GameManagerObject.SendMessage("CreateFile",newFileName);
 			var imageNavigatorObject= GameObject.Find("ImageNavigator");
 
-if(imageNavigatorObject){
-imageNavigatorObject.SendMessage("SetGallery",galleryValue);
-}
-else{print("WTF?  no imageNavigator?");}
-}
-else{print("WTF?  no gamemanager?");}
-print("CaseOne");
-break;
+	if(imageNavigatorObject) {
+		imageNavigatorObject.SendMessage("SetGallery",galleryValue);
+	}
+	else{print("WTF?  no imageNavigator?");}
+	}
+	else{print("WTF?  no gamemanager?");}
+	print("CaseOne");
+	break;
 
-case 2:
-print("CaseTwo");
-startTime = Time.time;
-state = LvlState.Wait;
-GameManagerObject = GameObject.Find("GameManager");
-if(GameManagerObject){
-	print("GameManagerFound!");
-	newFileName = "_"+"_Clapping_"+handStrings[handValue]+"";
-	GameManagerObject.SendMessage("CreateFile",newFileName);
-	var clapperScript = GameManagerObject.GetComponent(Clapper);
-	clapperScript.BlackScreen = BlackScreen;
-	clapperScript.Reversi = ReverseClap;
-}
-else{print("WTF?  no gamemanager?");}
+	case 2:
+		print("CaseTwo");
+		startTime = Time.time;
+		state = LvlState.Wait;
+		GameManagerObject = GameObject.Find("GameManager");
+		if(GameManagerObject){
+			print("GameManagerFound!");
+			newFileName = "_"+"_Clapping_"+handStrings[handValue]+"";
+			GameManagerObject.SendMessage("CreateFile",newFileName);
+			var clapperScript = GameManagerObject.GetComponent(Clapper);
+			clapperScript.BlackScreen = BlackScreen;
+			clapperScript.Reversi = ReverseClap;
+		}
+		else{print("WTF?  no gamemanager?");}
 
-break;
+	break;
 
-case 3:
-break;
+	case 3:
+	break;
 
- default:
- print("Invaid Level");
- break;
+	 default:
+	 print("Invaid Level");
+	 break;
 
- }
+	}
 }
 
 function PlaySong(){
@@ -260,7 +260,12 @@ function OnGUI(){
 	//GUILayout.EndArea ();
 	//GUILayout.BeginArea (Rect (10,85,800,800));
 		timeCases = GUILayout.SelectionGrid (timeCases, timeStrings, 3);
-		timeValue = timeCases*5 + 5; //Dumb
+		
+	
+		if(timeCases == 0){timeValue = 1;}//Is there a better way?
+		else if (timeCases == 1){timeValue = 5;}
+		else if (timeCases == 2){timeValue = 10;}
+		//timeValue = timeCases*5 + 5; //Dumb
 		//SHoW SOME PICTURES.
 		if(levelValue == 0){
 		 GUILayout.BeginHorizontal();
@@ -358,20 +363,21 @@ var ArbitaryResetValue : float = 0.7;
 var ArduinoValue : float;
 
 function DoMyWindow (windowID : int) {
-		if(Threshold<ArduinoValue){
+	Debug.Log(Threshold);
+		//if(Threshold<ArduinoValue){
 			Threshold = ArduinoValue;
-			}
-			if(ArduinoValue >= ArbitaryResetValue){//this should be a range!
-			Threshold = 0	;
-			}
-			GUILayout.Label("threshold is "+Threshold);//Maybe set to degrees
+			//}
+//			if(ArduinoValue >= ArbitaryResetValue){//this should be a range!// I have no idea what i was doing here
+//			Threshold = 0	;
+//			}
+			GUILayout.Label("threshold is "+Threshold);//Should be set to degrees
 		
 		if (GUILayout.Button("Click when done")){
 			ArmStretchToggle = false;
 			}
 			// Make the windows be draggable.
 		GUI.DragWindow (Rect (0,0,10000,10000));
-	}
+}
 
 
 private var filesLocation : String = "C:/Data";
@@ -383,16 +389,16 @@ function GetFilePaths(){
 
 var dInfo : DirectoryInfo = DirectoryInfo(filesLocation);
 var subdirs: DirectoryInfo[] = dInfo.GetDirectories();
-for (var sd in subdirs){
-print("subdirsname: "+ sd.Name + "  fullname "+ sd.FullName);
-}
-		for(var i = 0; i < dInfo.GetDirectories().Length; i++){
-		//print (dInfo.GetDirectories().Length);
-		//print (subdirs[i].FullName);
-		var f = subdirs[i];
-		 LoadThumbs(Directory.GetFiles(subdirs[i].FullName, "*.jpg", SearchOption.AllDirectories),0);  //.OrderBy( f => f.Name )
-	}//LOADING TOOO MANY IMAGES CAN BE DANGEROUS
-	//LoadAll(Directory.GetFiles(subdirs[2].FullName, "*.jpg", SearchOption.AllDirectories));
+	for (var sd in subdirs){
+		print("subdirsname: "+ sd.Name + "  fullname "+ sd.FullName);
+	}
+			for(var i = 0; i < dInfo.GetDirectories().Length; i++){
+			//print (dInfo.GetDirectories().Length);
+			//print (subdirs[i].FullName);
+			var f = subdirs[i];
+			 LoadThumbs(Directory.GetFiles(subdirs[i].FullName, "*.jpg", SearchOption.AllDirectories),0);  //.OrderBy( f => f.Name )
+		}//LOADING TOOO MANY IMAGES CAN BE DANGEROUS
+		//LoadAll(Directory.GetFiles(subdirs[2].FullName, "*.jpg", SearchOption.AllDirectories));
 
 }
 //var builtinArray : Texture2D[] = images.ToBuiltin(Texture2D) as Texture2D[];//please change the name of this variable
@@ -414,7 +420,7 @@ function LoadThumbs(filePaths : String[], firstImage : int) {
 				//imagedex++;
 				thumbImagesBuiltinArray = thumbImages.ToBuiltin(Texture2D) as Texture2D[];
 			}
-		}
+}
 
     /*
 function LoadAll( filePaths : String[]) {
