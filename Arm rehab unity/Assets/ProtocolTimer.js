@@ -279,6 +279,7 @@ function OnGUI(){
 		}
 		else{
 		BlackScreen = GUILayout.Toggle(BlackScreen,"Black Screen?");
+		ReverseClap = GUILayout.Toggle(ReverseClap,"Open Arm version?");
 		}
 		
 		ArmStretchToggle = GUILayout.Toggle(ArmStretchToggle,"Record Max Arm Threshold");

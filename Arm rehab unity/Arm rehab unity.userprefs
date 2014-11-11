@@ -1,15 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ProtocolTimer.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\CurtainOpener.js">
     <Files>
-      <File FileName="Assets\ProtocolTimer.js" Line="381" Column="33" />
+      <File FileName="Assets\Clapper.js" Line="336" Column="2" />
+      <File FileName="Assets\ProtocolTimer.js" Line="285" Column="77" />
       <File FileName="Assets\JukeBox\Scripts\Jukebox.cs" Line="1" Column="1" />
       <File FileName="Assets\Standard Assets\Uniduino\Scripts\Arduino.cs" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Scripts\SongDisplay.cs" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Scripts\Song.cs" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Scripts\PlayList.cs" Line="1" Column="1" />
       <File FileName="Assets\JukeBox\Editor\JukeBoxInspector.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AnalogReadGear.cs" Line="36" Column="26" />
+      <File FileName="Assets\CurtainOpener.js" Line="156" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

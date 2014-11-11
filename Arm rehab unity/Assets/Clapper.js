@@ -202,7 +202,7 @@ function Clap(){
 	audio.PlayOneShot(ClapSounds[clapSelection]); //Make some noize
 	if(TotalClaps == 2 ){ //Clap once to begin
 	Protocol.SendMessage("BeginCountDown");
-	print("CountdownCall Sent To Protocol");	//Invoke("PlaySong", 0); //Send to protocol 	//Invoke("EndGame", songs[songSelection].length + 1);
+	print("CountdownCall Sent To Protocol");	 //Send to protocol 	//Invoke("EndGame", songs[songSelection].length + 1);
 	}
 	if(FXPrefab){
 		var FX = Instantiate(FXPrefab);
@@ -271,14 +271,6 @@ GUI.DrawTexture (Rect (0, 0, Screen.width, Screen.height), BlackTexture);
 	}
 	}//DisplayGui
 //	GUILayout.EndArea ();
-}
-
-function StopSong(){
-FXMuscialNotes.SetActive(false); //THis is a placeholder for actuall edited songs. //audio.Stop(); //var notes : gameObject = GameObject.Find("MusicalNotes");//Destroy(notes);
- 
-}
-
-function PlaySong(){
 }
 
 function SkyBoxTint(){

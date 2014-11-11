@@ -27,7 +27,7 @@ namespace Uniduino.Examples
 						arduino = Arduino.global;
 						arduino.Log = (s) => Debug.Log ("Arduino: " + s);
 						arduino.Setup (ConfigurePins);
-			
+			print ("Arduino loading");
 						if (Application.loadedLevel == 0) { //Stopgap to set threshold in menu scene
 								Invoke ("Protocal", 5);
 						}

@@ -8,7 +8,7 @@ private var Protocol;
 public var Reversi : boolean = false;
 public var BlackScreen : boolean = false;// Handle with setup
 public var outerLimit : float = -1.0;// Handle with setup //do not adjust your tv set
-
+var thresh : float;    //SEDA 
 var repNumber : int = 0;
 var numberGui : GameObject;
 var RCurtain : GameObject;
@@ -21,6 +21,7 @@ var minValue : float;//
 var maxValue : float;//When to change slides
 
 var BlackTexture : Texture2D;
+var DarkScreenObject : GameObject;
 
 //Maybe split this out?
 var ArduinoCtrl : boolean;
@@ -44,30 +45,39 @@ var slides : Texture2D[]  = new Texture2D[1];
 var screen : GameObject;
 
 
-
- @System.NonSerialized
-    var currentSlide : int = 0;
-    var slideReady : boolean;
+@System.NonSerialized
+   var currentSlide : int = 0;
+   var slideReady : boolean;
 
 function EndGame(){
-//What is this for anymore?
-//Play Horray sound  
 atEndGame = true;
-
 }
 
 function Start () {
   Protocol = GameObject.Find("Protocol");
   ImageNavigator = GameObject.Find("ImageNavigator");
+  if (Protocol){//check agaist nulls for testing
+  thresh = Protocol.GetComponent(ProtocolTimer).Threshold; //Seda
+  	Protocol.SendMessage("BeginCountDown");
+print("CountdownCall Sent To Protocol");
+  }
 //ImageNavigator.SendMessage("ShowChoices",true);
 //Depreciated, replace with something else
 	screen.renderer.material.mainTexture = slides[currentSlide];
 //screen.pixelInset = new Rect(-slides[currentSlide].width/2, -slides[currentSlide].height/2, slides[currentSlide].width, slides[currentSlide].height);
 	currentSlide++;
 	numberGui.guiText.text = "Start!";
-	Protocol.SendMessage("BeginCountDown");
-	print("CountdownCall Sent To Protocol");
 	
+	if(BlackScreen) {
+	//DarkScreenObject.SetActive(true);//Doesn't work for whatever reason.
+	DarkScreenObject.renderer.enabled = true; 
+	print("DARKNESS");
+	}
+	else {
+	DarkScreenObject.renderer.enabled = false;
+		print("LIGHT");
+
+	}
 }
 
 function GetValue(pinValue : int){
@@ -78,13 +88,11 @@ function GetValue(pinValue : int){
 }
 
 // FadeInOut
-
 public var fadeOutTexture : Texture2D;
 public var fadeSpeed = 0.3; 
+
  
- //var thresh = Protocol.GetComponent(ProtocolTimer).Threshold;    //SEDA 
- 
-var drawDepth = -1000;
+private var drawDepth = -1000;
  
 private var alpha = 1.0; 
  
@@ -104,12 +112,11 @@ function Update () {
 
 function ReverseCurtain(){
 
-changeSlideValue = -outerLimit; //ROUGH DRAFT.  MIGHT NEED grace range
+	changeSlideValue = thresh; //ROUGH DRAFT.  MIGHT NEED grace range
 
-if( ArduinoCtrl == true ) {
+	if( ArduinoCtrl == true ) {
 		targetValue = ArduinoValue - 1.0;// HERE REVERSI
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
-		//print(targetValue); //
 	}
 	else{
 	  var mousePos = Input.mousePosition ;
@@ -121,50 +128,31 @@ if( ArduinoCtrl == true ) {
     //print(mousePos.x + " is the mouse pos " + newPos.x + " is the mouse to world point");  
     if(targetValue > 1.0) {
     	targetValue = 1.0;
-    }    
+    }
     
-    //var step = speed * Time.deltaTime;			// Move our position a step closer to the target.
-	//transform.position = Vector3.MoveTowards(transform.position, target.position, step);
     RCurtain.transform.position.x = Mathf.MoveTowards(RCurtain.transform.position.x, Mathf.Exp(targetValue * moveMultiplyer) + curatinOffset, .4);
     LCurtain.transform.position.x = Mathf.MoveTowards(LCurtain.transform.position.x, -Mathf.Exp(targetValue * moveMultiplyer) - curatinOffset, 0.4);
  
 //Slides Stuff
     if(currentSlide == slides.Length) {//Does this work or matter anymore?
-		currentSlide = 0;
-		audio.PlayOneShot(Tada);
+		currentSlide = 0;		audio.PlayOneShot(Tada);
 	}
-//	print("mathsround  "+Mathf.RoundToInt(newPos.x));
-     if(targetValue <= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CLUE.######################## REVERSI
-      
-     {
+     if(targetValue >= changeSlideValue && !slideReady) { //WARNING< MAGIC NUMBERS FOR SLIDE CLUE.######################## REVERSI     
      //Change the slide
        ImageNavigator.SendMessage("ChangeImg");
       print("Change the slide!");
         
         Invoke("fadeIn", 0);
-     
-       repNumber++;
-     var LvlState;
-     if(repNumber <= 1 && Protocol.GetComponent(ProtocolTimer) != null){
-     //Have a null value catcher here.
-  //   var theState = Protocol.GetComponent(ProtocolTimer).state;
- //Protocol.GetComponent(ProtocolTimer).state = LvlState.Wait;
-     }
-     else if (repNumber >= 1){
-   // Protocol.GetComponent(ProtocolTimer).state = LvlState.InProgress;
-
-     }
-     
-     if (numberGui){  
-       numberGui.guiText.text = repNumber.ToString() + " reps";
-     }
+       repNumber++;    	 
+	      
+	     if (numberGui  && !BlackScreen){  
+	       numberGui.guiText.text = repNumber.ToString() + " reps"; //display number of reps
+	     }
 		CancelInvoke("fadeOut");
-	//	CancelInvoke("fadeIn");
        slideReady = true;
        
-       
      }
-     else if(targetValue > .75){//this used to be rounded to int, why did i do tht?
+     else if(targetValue < .4) {
      slideReady = false;
      CancelInvoke("fadeIn");
       if(!IsInvoking("fadeOut")){
@@ -173,7 +161,7 @@ if( ArduinoCtrl == true ) {
      }  
 }
 
-function Curtain(){
+function Curtain() {
 	if( ArduinoCtrl == true ){
 		targetValue = ArduinoValue - 1.0;
 		targetValue = ( 1.0 * targetValue * ArduinoAdjustMult) - ArduinoAdjustSub;
@@ -183,7 +171,7 @@ function Curtain(){
 	  var mousePos = Input.mousePosition ;
 	  mousePos.z = 1; // select distance = 10 units from the camera
 	  var newPos  = (Camera.main.ScreenToWorldPoint(mousePos));
-	  targetValue	= newPos.x;
+	  targetValue = newPos.x;
 	}
     // this.transform.position.z = Mathf.Lerp(this.transform.position.z,  newPos.z , Time.time);
     //print(mousePos.x + " is the mouse pos " + newPos.x + " is the mouse to world point");  
@@ -193,10 +181,9 @@ function Curtain(){
     
     //var step = speed * Time.deltaTime;			// Move our position a step closer to the target.
 	//transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-    RCurtain.transform.position.x = Mathf.MoveTowards(RCurtain.transform.position.x, Mathf.Exp(targetValue * moveMultiplyer) + curatinOffset, .4);
+    RCurtain.transform.position.x = Mathf.MoveTowards(RCurtain.transform.position.x, Mathf.Exp(targetValue * moveMultiplyer) + curatinOffset, 0.4);
     LCurtain.transform.position.x = Mathf.MoveTowards(LCurtain.transform.position.x, -Mathf.Exp(targetValue * moveMultiplyer) - curatinOffset, 0.4);
  
-   
 //Slides Stuff
     if(currentSlide == slides.Length) {//Does this work or matter anymore?
 		currentSlide = 0;
@@ -206,39 +193,29 @@ function Curtain(){
      if(targetValue <= changeSlideValue && !slideReady)  //WARNING< MAGIC NUMBERS FOR SLIDE CLUE.
       
      {
-     //Change the slide
-       ImageNavigator.SendMessage("ChangeImg");
+      ImageNavigator.SendMessage("ChangeImg");     //Change the slide
       print("Change the slide!");
         
-        Invoke("fadeIn", 0);
+     Invoke("fadeIn", 0);
      
-       repNumber++;
-     var LvlState;
-     if(repNumber <= 1 && Protocol.GetComponent(ProtocolTimer) != null){
-     //Have a null value catcher here.
-  //   var theState = Protocol.GetComponent(ProtocolTimer).state;
- //Protocol.GetComponent(ProtocolTimer).state = LvlState.Wait;
-     }
-     else if (repNumber >= 1){
-   // Protocol.GetComponent(ProtocolTimer).state = LvlState.InProgress;
-
-     }
+     repNumber++;
      
-     if (numberGui){  
+     
+     if (numberGui && !BlackScreen){  
        numberGui.guiText.text = repNumber.ToString() + " reps";
      }
 		CancelInvoke("fadeOut");
 	//	CancelInvoke("fadeIn");
        slideReady = true;
        
-       
      }
      else if(targetValue > .75){//this used to be rounded to int, why did i do tht?
-     slideReady = false;
-     CancelInvoke("fadeIn");
-      if(!IsInvoking("fadeOut")){
-     Invoke("fadeOut", FadeOutTimer);
-     }
+     	slideReady = false;
+    	CancelInvoke("fadeIn");
+    	
+        if(!IsInvoking("fadeOut")) {
+     		Invoke("fadeOut", FadeOutTimer);
+     	}
      }  
 }
 
